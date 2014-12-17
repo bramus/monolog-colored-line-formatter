@@ -1,0 +1,23 @@
+{
+    "name": "bramus/monolog-colored-line-formatter",
+    "description": "Colored Line Formatter for Monolog",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bramus Van Damme",
+            "email": "bramus@bram.us",
+            "homepage": "https://www.bram.us/"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "bramus\\monolog\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}

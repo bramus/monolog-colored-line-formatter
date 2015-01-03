@@ -9,7 +9,9 @@
             "homepage": "https://www.bram.us/"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=5.3.3"
+    },
     "require-dev": {
         "monolog/monolog": "~1.0",
         "phpunit/phpunit": "~4.0"

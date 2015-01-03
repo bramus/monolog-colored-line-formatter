@@ -10,6 +10,10 @@
         }
     ],
     "require": {},
+    "require-dev": {
+        "monolog/monolog": "~1.0",
+        "phpunit/phpunit": "~4.0"
+    },
     "autoload": {
         "psr-4": {
             "Bramus\\Monolog\\": "src/"

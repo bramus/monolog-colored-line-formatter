@@ -7,36 +7,113 @@ namespace Bramus\Monolog\Formatter;
  */
 class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 
-	protected static $colors = array(
-		'BLACK' => "\033[30m",
-		'RED' => "\033[31m",
-		'GREEN' => "\033[32m",
-		'YELLOW' => "\033[33m",
-		'BLUE' => "\033[34m",
-		'PURPLE' => "\033[35m",
-		'CYAN' => "\033[36m",
-		'WHITE' => "\033[37m",
+	const COLOR_BLACK = '0';
+	const COLOR_RED = '1';
+	const COLOR_GREEN = '2';
+	const COLOR_YELLOW = '3';
+	const COLOR_BLUE = '4';
+	const COLOR_PURPLE = '5';
+	const COLOR_CYAN = '6';
+	const COLOR_WHITE = '7';
 
-		'BOLDBLACK' => "\033[1;30m",
-		'BOLDRED' => "\033[1;31m",
-		'BOLDGREEN' => "\033[1;32m",
-		'BOLDYELLOW' => "\033[1;33m",
-		'BOLDBLUE' => "\033[1;34m",
-		'BOLDPURPLE' => "\033[1;35m",
-		'BOLDCYAN' => "\033[1;36m",
-		'BOLDWHITE' => "\033[1;37m",
+	const CODE_FOREGROUND = '3';
+	const CODE_FOREGROUND_HIGH = '9';
+	const CODE_BACKGROUND = '4';
+	const CODE_BACKGROUND_HIGH = '10';
 
-		'BGBLACK' => "\033[40m",
-		'BGRED' => "\033[41m",
-		'BGGREEN' => "\033[42m",
-		'GBYELLOW' => "\033[43m",
-		'BGBLUE' => "\033[44m",
-		'BGPURPLE' => "\033[45m",
-		'BGCYAN' => "\033[46m",
-		'BGWHITE' => "\033[47m",
+	const FORMATTING_NONE = '';
+	const FORMATTING_BOLD = '1;';
+	const FORMATTING_UNDERLINE = '4;';
 
-		'COLOROFF' => "\033[0m"
-	);
+	private $colorizeTable = null;
+
+
+	/**
+	 * Format a color to its Bash string, e.g. white foreground color is "\033[37m"
+	 * @see https://wiki.archlinux.org/index.php/Color_Bash_Prompt#List_of_colors_for_prompt_and_Bash for list of colors
+	 * 
+	 * @param  int $color The color to use in the output (1-7)
+	 * @param  string $formatting Extra formatting to apply. Allowed values: 'underline' and 'bold'
+	 * @param  string $type The type of color. Allowed values: 'foreground', 'foreground_high', 'background', and 'background_high'
+	 * @return string The Bash string representing the color
+	 */
+	public function formatColor($color, $formatting = '', $type = 'foreground')
+	{
+
+		// Rework $color so that it can be used
+		$color = (int) $color;
+		if (($color < 0) || ($color > 7)) {
+			$color = 0;
+		}
+
+		// Rework $type so that it can be used in the colorstring
+		switch($type) {
+			case 'background_high':
+				$type = self::CODE_BACKGROUND_HIGH;
+				break;
+			case 'background':
+				$type = self::CODE_BACKGROUND;
+				break;
+			case 'foreground_high':
+				$type = self::CODE_FOREGROUND_HIGH;
+				break;
+			case 'foreground':
+			default:
+				$type = self::CODE_FOREGROUND;
+				break;
+		}
+
+		// Rework $formatting so that it can be used in the colorstring
+		// but only if foreground color is selected
+		if ($type == self::CODE_BACKGROUND) {
+			$formatting = self::FORMATTING_NONE;
+		} else {
+			switch($formatting) {
+				case 'bold':
+					$formatting = self::FORMATTING_BOLD;
+					break;
+				case 'underline':
+					$formatting = self::FORMATTING_UNDERLINE;
+					break;
+				default:
+					$formatting = self::FORMATTING_NONE;
+					break;
+			}
+		}
+
+		// Build the color string and return it
+		return "\033[" . $formatting . $type . $color . "m";
+
+	}
+
+	public function resetColor()
+	{
+		return "\033[0m";
+	}
+
+	public function getColorizeTable()
+	{
+		if (!$this->colorizeTable) {
+			$this->colorizeTable = array(
+				\Monolog\Logger::DEBUG => $this->formatColor(self::COLOR_WHITE),
+				\Monolog\Logger::INFO => $this->formatColor(self::COLOR_GREEN),
+				\Monolog\Logger::NOTICE => $this->formatColor(self::COLOR_CYAN),
+				\Monolog\Logger::WARNING => $this->formatColor(self::COLOR_YELLOW),
+				\Monolog\Logger::ERROR => $this->formatColor(self::COLOR_RED, 'underline'),
+				\Monolog\Logger::CRITICAL => $this->formatColor(self::COLOR_RED, 'bold'),
+				\Monolog\Logger::ALERT => $this->formatColor(self::COLOR_WHITE) . $this->formatColor(self::COLOR_RED, '', 'background'),
+				\Monolog\Logger::EMERGENCY => $this->formatColor(self::COLOR_WHITE, 'bold') . $this->formatColor(self::COLOR_RED, '', 'background')
+			);
+		}
+
+		return $this->colorizeTable;
+
+	}
+
+	public function setColorizeTable($table)
+	{
+		$this->colorizeTable = $table;
+	}
 
     /**
      * {@inheritdoc}
@@ -44,18 +121,12 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
     public function format(array $record)
     {
 
-		$colorizetable = array(
-			\Monolog\Logger::DEBUG => static::$colors['WHITE'] . static::$colors['BGBLACK'],
-			\Monolog\Logger::INFO => static::$colors['GREEN'] . static::$colors['BGBLACK'],
-			\Monolog\Logger::NOTICE => static::$colors['CYAN'] . static::$colors['BGBLACK'],
-			\Monolog\Logger::WARNING => static::$colors['YELLOW'] . static::$colors['BGBLACK'],
-			\Monolog\Logger::ERROR => static::$colors['RED'] . static::$colors['BGBLACK'],
-			\Monolog\Logger::CRITICAL => static::$colors['BOLDRED'] . static::$colors['BGBLACK'],
-			\Monolog\Logger::ALERT => static::$colors['WHITE'] . static::$colors['BGRED'],
-			\Monolog\Logger::EMERGENCY => static::$colors['BOLDWHITE'] . static::$colors['BGRED']
-		);
+    	// Get colorize table
+    	$colorizeTable = $this->getColorizeTable();
 
-        return $colorizetable[$record['level']] . parent::format($record) . static::$colors['COLOROFF'];
+    	// Let the parent class to the formatting, yet wrap it in the color linked to the level
+        return $colorizeTable[$record['level']] . parent::format($record) . $this->resetColor();
+
     }
 
 }

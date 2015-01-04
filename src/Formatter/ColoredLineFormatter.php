@@ -24,6 +24,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 
 	const FORMATTING_NONE = '0';
 	const FORMATTING_BOLD = '1';
+	const FORMATTING_DIM = '2';
 	const FORMATTING_UNDERLINE = '4';
 	const FORMATTING_BLINK = '5';
 	const FORMATTING_REVERSE = '7';
@@ -36,9 +37,10 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 	 * Format a wanted color as an ANSI Escape Sequence, e.g. white bold foreground color is "\033[1;37m"
 	 * @see https://wiki.archlinux.org/index.php/Color_Bash_Prompt#List_of_colors_for_prompt_and_Bash
 	 * @see http://bluesock.org/~willg/dev/ansi.html
+	 * @see  http://wiki.bash-hackers.org/scripting/terminalcodes
 	 * 
 	 * @param  int $color The color to use in the output (1-7)
-	 * @param  string $formatting Extra formatting to apply. Allowed values: 'underline', 'bold', 'blink', 'reverse', 'conceal'
+	 * @param  string $formatting Extra formatting to apply. Allowed values: 'underline', 'bold', 'blink', 'reverse', 'conceal', and 'dim'
 	 * @param  string $type The type of color. Allowed values: 'foreground', 'foreground_high', 'background', and 'background_high'
 	 * @return string The ANSI Escape Sequence representing the wanted color
 	 */
@@ -79,6 +81,9 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 					break;
 				case 'underline':
 					$formatting = self::FORMATTING_UNDERLINE;
+					break;
+				case 'dim':
+					$formatting = self::FORMATTING_DIM;
 					break;
 				case 'blink':
 					$formatting = self::FORMATTING_BLINK;

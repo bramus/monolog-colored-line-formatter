@@ -53,6 +53,16 @@ class ColoredLineFormatterTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_CYAN, 'bold', 'foreground'), "\033[1;36m");
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_WHITE, 'bold', 'foreground'), "\033[1;37m");
 
+		// Foreground Colors, Dim
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLACK, 'dim', 'foreground'), "\033[2;30m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_RED, 'dim', 'foreground'), "\033[2;31m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_GREEN, 'dim', 'foreground'), "\033[2;32m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_YELLOW, 'dim', 'foreground'), "\033[2;33m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLUE, 'dim', 'foreground'), "\033[2;34m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_PURPLE, 'dim', 'foreground'), "\033[2;35m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_CYAN, 'dim', 'foreground'), "\033[2;36m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_WHITE, 'dim', 'foreground'), "\033[2;37m");
+
 		// Foreground Colors, Underline
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLACK, 'underline', 'foreground'), "\033[4;30m");
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_RED, 'underline', 'foreground'), "\033[4;31m");
@@ -62,6 +72,36 @@ class ColoredLineFormatterTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_PURPLE, 'underline', 'foreground'), "\033[4;35m");
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_CYAN, 'underline', 'foreground'), "\033[4;36m");
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_WHITE, 'underline', 'foreground'), "\033[4;37m");
+
+		// Foreground Colors, Blink
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLACK, 'blink', 'foreground'), "\033[5;30m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_RED, 'blink', 'foreground'), "\033[5;31m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_GREEN, 'blink', 'foreground'), "\033[5;32m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_YELLOW, 'blink', 'foreground'), "\033[5;33m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLUE, 'blink', 'foreground'), "\033[5;34m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_PURPLE, 'blink', 'foreground'), "\033[5;35m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_CYAN, 'blink', 'foreground'), "\033[5;36m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_WHITE, 'blink', 'foreground'), "\033[5;37m");
+
+		// Foreground Colors, Reverse
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLACK, 'reverse', 'foreground'), "\033[7;30m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_RED, 'reverse', 'foreground'), "\033[7;31m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_GREEN, 'reverse', 'foreground'), "\033[7;32m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_YELLOW, 'reverse', 'foreground'), "\033[7;33m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLUE, 'reverse', 'foreground'), "\033[7;34m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_PURPLE, 'reverse', 'foreground'), "\033[7;35m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_CYAN, 'reverse', 'foreground'), "\033[7;36m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_WHITE, 'reverse', 'foreground'), "\033[7;37m");
+
+		// Foreground Colors, Conceal
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLACK, 'conceal', 'foreground'), "\033[8;30m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_RED, 'conceal', 'foreground'), "\033[8;31m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_GREEN, 'conceal', 'foreground'), "\033[8;32m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_YELLOW, 'conceal', 'foreground'), "\033[8;33m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLUE, 'conceal', 'foreground'), "\033[8;34m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_PURPLE, 'conceal', 'foreground'), "\033[8;35m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_CYAN, 'conceal', 'foreground'), "\033[8;36m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_WHITE, 'conceal', 'foreground'), "\033[8;37m");
 
 	}
 
@@ -87,6 +127,16 @@ class ColoredLineFormatterTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_PURPLE, 'bold', 'foreground_high'), "\033[1;95m");
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_CYAN, 'bold', 'foreground_high'), "\033[1;96m");
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_WHITE, 'bold', 'foreground_high'), "\033[1;97m");
+
+		// Foreground Colors, Dim
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLACK, 'dim', 'foreground_high'), "\033[2;90m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_RED, 'dim', 'foreground_high'), "\033[2;91m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_GREEN, 'dim', 'foreground_high'), "\033[2;92m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_YELLOW, 'dim', 'foreground_high'), "\033[2;93m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLUE, 'dim', 'foreground_high'), "\033[2;94m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_PURPLE, 'dim', 'foreground_high'), "\033[2;95m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_CYAN, 'dim', 'foreground_high'), "\033[2;96m");
+		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_WHITE, 'dim', 'foreground_high'), "\033[2;97m");
 
 		// Foreground Colors, Underline
 		$this->assertEquals($this->clf->formatColor(ColoredLineFormatter::COLOR_BLACK, 'underline', 'foreground_high'), "\033[4;90m");

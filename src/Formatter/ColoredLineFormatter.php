@@ -86,11 +86,21 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 
 	}
 
+
+	/**
+	 * Return the bash string to reset the color
+	 * @return string The Bash string representing the color reset
+	 */
 	public function resetColor()
 	{
 		return "\033[0m";
 	}
 
+
+	/**
+	 * Gets the colorize table to use
+	 * @return array
+	 */
 	public function getColorizeTable()
 	{
 		if (!$this->colorizeTable) {
@@ -110,10 +120,16 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 
 	}
 
+
+	/**
+	 * Sets the colorize table
+	 * @param array
+	 */
 	public function setColorizeTable($table)
 	{
 		$this->colorizeTable = $table;
 	}
+
 
     /**
      * {@inheritdoc}

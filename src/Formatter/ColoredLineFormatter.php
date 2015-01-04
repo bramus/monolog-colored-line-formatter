@@ -17,18 +17,18 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 	const COLOR_WHITE = '7';
 	const COLOR_RESET = '9';
 
-	const CODE_FOREGROUND = '3';
-	const CODE_FOREGROUND_HIGH = '9';
-	const CODE_BACKGROUND = '4';
-	const CODE_BACKGROUND_HIGH = '10';
+	const COLORING_FOREGROUND = '3';
+	const COLORING_FOREGROUND_HIGH = '9';
+	const COLORING_BACKGROUND = '4';
+	const COLORING_BACKGROUND_HIGH = '10';
 
-	const FORMATTING_NONE = '0';
-	const FORMATTING_BOLD = '1';
-	const FORMATTING_DIM = '2';
-	const FORMATTING_UNDERLINE = '4';
-	const FORMATTING_BLINK = '5';
-	const FORMATTING_REVERSE = '7';
-	const FORMATTING_CONCEAL = '8';
+	const ATTRIBUTE_NONE = '0';
+	const ATTRIBUTE_BOLD = '1';
+	const ATTRIBUTE_DIM = '2';
+	const ATTRIBUTE_UNDERLINE = '4';
+	const ATTRIBUTE_BLINK = '5';
+	const ATTRIBUTE_REVERSE = '7';
+	const ATTRIBUTE_CONCEAL = '8';
 
 	private $colorizeTable = null;
 
@@ -40,11 +40,11 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 	 * @see  http://wiki.bash-hackers.org/scripting/terminalcodes
 	 * 
 	 * @param  int $color The color to use in the output (1-7)
-	 * @param  string $formatting Extra formatting to apply. Allowed values: 'underline', 'bold', 'blink', 'reverse', 'conceal', and 'dim'
-	 * @param  string $type The type of color. Allowed values: 'foreground', 'foreground_high', 'background', and 'background_high'
+	 * @param  string $attribute Text attribute to apply. Allowed values: 'underline', 'bold', 'blink', 'reverse', 'conceal', and 'dim'
+	 * @param  string $coloring The type of coloring to apply. Allowed values: 'foreground', 'foreground_high', 'background', and 'background_high'
 	 * @return string The ANSI Escape Sequence representing the wanted color
 	 */
-	public function formatColor($color, $formatting = '', $type = 'foreground')
+	public function formatColor($color, $attribute = '', $coloring = 'foreground')
 	{
 
 		// Rework $color so that it can be used
@@ -53,55 +53,55 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 			$color = 0;
 		}
 
-		// Rework $type so that it can be used in the colorstring
-		switch($type) {
+		// Rework $coloring so that it can be used in the colorstring
+		switch($coloring) {
 			case 'background_high':
-				$type = self::CODE_BACKGROUND_HIGH;
+				$coloring = self::COLORING_BACKGROUND_HIGH;
 				break;
 			case 'background':
-				$type = self::CODE_BACKGROUND;
+				$coloring = self::COLORING_BACKGROUND;
 				break;
 			case 'foreground_high':
-				$type = self::CODE_FOREGROUND_HIGH;
+				$coloring = self::COLORING_FOREGROUND_HIGH;
 				break;
 			case 'foreground':
 			default:
-				$type = self::CODE_FOREGROUND;
+				$coloring = self::COLORING_FOREGROUND;
 				break;
 		}
 
-		// Rework $formatting so that it can be used in the colorstring
+		// Rework $attribute so that it can be used in the colorstring
 		// but only if foreground color is selected
-		if ($type == self::CODE_BACKGROUND) {
-			$formatting = self::FORMATTING_NONE;
+		if ($coloring == self::COLORING_BACKGROUND) {
+			$attribute = self::ATTRIBUTE_NONE;
 		} else {
-			switch($formatting) {
+			switch($attribute) {
 				case 'bold':
-					$formatting = self::FORMATTING_BOLD;
+					$attribute = self::ATTRIBUTE_BOLD;
 					break;
 				case 'underline':
-					$formatting = self::FORMATTING_UNDERLINE;
+					$attribute = self::ATTRIBUTE_UNDERLINE;
 					break;
 				case 'dim':
-					$formatting = self::FORMATTING_DIM;
+					$attribute = self::ATTRIBUTE_DIM;
 					break;
 				case 'blink':
-					$formatting = self::FORMATTING_BLINK;
+					$attribute = self::ATTRIBUTE_BLINK;
 					break;
 				case 'reverse':
-					$formatting = self::FORMATTING_REVERSE;
+					$attribute = self::ATTRIBUTE_REVERSE;
 					break;
 				case 'conceal':
-					$formatting = self::FORMATTING_CONCEAL;
+					$attribute = self::ATTRIBUTE_CONCEAL;
 					break;
 				default:
-					$formatting = self::FORMATTING_NONE;
+					$attribute = self::ATTRIBUTE_NONE;
 					break;
 			}
 		}
 
 		// Build the color string and return it
-		return "\033[" . $formatting . ';' . $type . $color . "m";
+		return "\033[" . $attribute . ';' . $coloring . $color . "m";
 
 	}
 

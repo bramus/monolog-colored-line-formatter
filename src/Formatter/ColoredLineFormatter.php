@@ -15,27 +15,32 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 	const COLOR_PURPLE = '5';
 	const COLOR_CYAN = '6';
 	const COLOR_WHITE = '7';
+	const COLOR_RESET = '9';
 
 	const CODE_FOREGROUND = '3';
 	const CODE_FOREGROUND_HIGH = '9';
 	const CODE_BACKGROUND = '4';
 	const CODE_BACKGROUND_HIGH = '10';
 
-	const FORMATTING_NONE = '';
-	const FORMATTING_BOLD = '1;';
-	const FORMATTING_UNDERLINE = '4;';
+	const FORMATTING_NONE = '0';
+	const FORMATTING_BOLD = '1';
+	const FORMATTING_UNDERLINE = '4';
+	const FORMATTING_BLINK = '5';
+	const FORMATTING_REVERSE = '7';
+	const FORMATTING_CONCEAL = '8';
 
 	private $colorizeTable = null;
 
 
 	/**
-	 * Format a color to its Bash string, e.g. white foreground color is "\033[37m"
-	 * @see https://wiki.archlinux.org/index.php/Color_Bash_Prompt#List_of_colors_for_prompt_and_Bash for list of colors
+	 * Format a wanted color as an ANSI Escape Sequence, e.g. white bold foreground color is "\033[1;37m"
+	 * @see https://wiki.archlinux.org/index.php/Color_Bash_Prompt#List_of_colors_for_prompt_and_Bash
+	 * @see http://bluesock.org/~willg/dev/ansi.html
 	 * 
 	 * @param  int $color The color to use in the output (1-7)
-	 * @param  string $formatting Extra formatting to apply. Allowed values: 'underline' and 'bold'
+	 * @param  string $formatting Extra formatting to apply. Allowed values: 'underline', 'bold', 'blink', 'reverse', 'conceal'
 	 * @param  string $type The type of color. Allowed values: 'foreground', 'foreground_high', 'background', and 'background_high'
-	 * @return string The Bash string representing the color
+	 * @return string The ANSI Escape Sequence representing the wanted color
 	 */
 	public function formatColor($color, $formatting = '', $type = 'foreground')
 	{
@@ -75,6 +80,15 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 				case 'underline':
 					$formatting = self::FORMATTING_UNDERLINE;
 					break;
+				case 'blink':
+					$formatting = self::FORMATTING_BLINK;
+					break;
+				case 'reverse':
+					$formatting = self::FORMATTING_REVERSE;
+					break;
+				case 'conceal':
+					$formatting = self::FORMATTING_CONCEAL;
+					break;
 				default:
 					$formatting = self::FORMATTING_NONE;
 					break;
@@ -82,7 +96,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 		}
 
 		// Build the color string and return it
-		return "\033[" . $formatting . $type . $color . "m";
+		return "\033[" . $formatting . ';' . $type . $color . "m";
 
 	}
 

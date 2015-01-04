@@ -102,10 +102,10 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 
 
 	/**
-	 * Return the bash string to reset the color
-	 * @return string The Bash string representing the color reset
+	 * Return the ANSI Escape Sequence to reset the formatting
+	 * @return string The ANSI Escape Sequence to reset the formatting
 	 */
-	public function resetColor()
+	public function resetFormatting()
 	{
 		return "\033[0m";
 	}
@@ -155,7 +155,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
     	$colorizeTable = $this->getColorizeTable();
 
     	// Let the parent class to the formatting, yet wrap it in the color linked to the level
-        return $colorizeTable[$record['level']] . parent::format($record) . $this->resetColor();
+        return $colorizeTable[$record['level']] . parent::format($record) . $this->resetFormatting();
 
     }
 

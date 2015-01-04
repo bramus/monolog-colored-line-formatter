@@ -155,7 +155,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
     	$colorizeTable = $this->getColorizeTable();
 
     	// Let the parent class to the formatting, yet wrap it in the color linked to the level
-        return $colorizeTable[$record['level']] . parent::format($record) . $this->resetFormatting();
+        return $colorizeTable[$record['level']] . trim(parent::format($record)) . $this->resetFormatting() . "\n";
 
     }
 

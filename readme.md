@@ -7,7 +7,7 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 
 ## About
 
-`bramus/monolog-colored-line-formatter` is a formatter for use with [Monolog](https://github.com/Seldaek/monolog). It augments the [Monolog LineFormatter](https://github.com/Seldaek/monolog/blob/master/src/Monolog/Formatter/LineFormatter.php) by adding color support. To achieve this `bramus/monolog-colored-line-formatter` uses ANSI Escape Sequences, which makes it perfect for usage on text based terminals (viz. the shell).
+`bramus/monolog-colored-line-formatter` is a formatter for use with [Monolog](https://github.com/Seldaek/monolog). It augments the [Monolog LineFormatter](https://github.com/Seldaek/monolog/blob/master/src/Monolog/Formatter/LineFormatter.php) by adding color support. To achieve this `bramus/monolog-colored-line-formatter` uses ANSI Escape Sequences – provided by `bramus/ansi-php` – which makes it perfect for usage on text based terminals (viz. the shell).
 
 `bramus/monolog-colored-line-formatter` ships with a default color scheme, yet it can be adjusted to fit your own needs.
 
@@ -51,6 +51,8 @@ Make sure that upon creation of a new `ColoredLineFormatter` instance you store 
 use \Monolog\Logger;
 use \Monolog\Handler\StreamHandler;
 use \Bramus\Monolog\Formatter\ColoredLineFormatter;
+use \Bramus\Ansi\Helper;
+use \Bramus\Ansi\Escapecodes\Sgr;
 
 $log = new Logger('DEMO');
 $handler = new StreamHandler('php://stdout', Logger::WARNING);
@@ -58,63 +60,21 @@ $coloredLineFormatter = new ColoredLineFormatter();
 $handler->setFormatter($coloredLineFormatter);
 $log->pushHandler($handler);
 
+$ansiHelper = new Helper();
+
 $coloredLineFormatter->setColorizeTable(array(
-	Logger::DEBUG => ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_WHITE),
-	Logger::INFO => ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_GREEN),
-	Logger::NOTICE => ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_CYAN),
-	Logger::WARNING => ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_YELLOW),
-	Logger::ERROR => ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_RED),
-	Logger::CRITICAL => ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_RED, 'underline'),
-	Logger::ALERT => ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_WHITE) . ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_RED, '', 'background_high'),
-	Logger::EMERGENCY =>  ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_RED, '', 'background_high') . ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_WHITE, 'blink')
+	\Monolog\Logger::DEBUG => $ansiHelper->color(Sgr::COLOR_FG_WHITE)->get(),
+    \Monolog\Logger::INFO => $ansiHelper->color(Sgr::COLOR_FG_GREEN)->get(),
+    \Monolog\Logger::NOTICE => $ansiHelper->color(Sgr::COLOR_FG_CYAN)->get(),
+    \Monolog\Logger::WARNING => $ansiHelper->color(Sgr::COLOR_FG_YELLOW)->get(),
+    \Monolog\Logger::ERROR => $ansiHelper->color(Sgr::COLOR_FG_RED)->get(),
+    \Monolog\Logger::CRITICAL => $ansiHelper->color(Sgr::COLOR_FG_RED)->underline()->get(),
+    \Monolog\Logger::ALERT => $ansiHelper->color(array(Sgr::COLOR_FG_WHITE, Sgr::COLOR_BG_RED_BRIGHT))->get(),
+    \Monolog\Logger::EMERGENCY => $ansiHelper->color(Sgr::COLOR_BG_RED_BRIGHT)->blink()->color(Sgr::COLOR_FG_WHITE)->get(),
 ));
 ```
 
-## Specifying Colors
-
-`bramus/monolog-colored-line-formatter` uses ANSI Escape Sequences to set the color. To format a color, call `ColoredLineFormatter::formatColor($color, $attribute, $coloring)` and pass in these parameters:
-
-- `$color`: The color to use in the output
-- `$attribute`: Text attribute to apply
-- `$coloring`: The type of coloring to apply
-
-The parameters will be translated to SGR (Select Graphic Rendition) Parameters.
-
-### List of Colors
-
-- `ColoredLineFormatter::COLOR_BLACK`: Black
-- `ColoredLineFormatter::COLOR_RED`: Red
-- `ColoredLineFormatter::COLOR_GREEN`: Green
-- `ColoredLineFormatter::COLOR_YELLOW`: Yellow
-- `ColoredLineFormatter::COLOR_BLUE`: Blue
-- `ColoredLineFormatter::COLOR_PURPLE`: Purple
-- `ColoredLineFormatter::COLOR_CYAN`: Cyan
-- `ColoredLineFormatter::COLOR_WHITE`: White
-
-### Attributes
-
-- `ColoredLineFormatter::ATTRIBUTE_NONE`: All Attributes Off
-- `ColoredLineFormatter::ATTRIBUTE_BOLD`: Bold or increased intensity
-- `ColoredLineFormatter::ATTRIBUTE_DIM`: Decreased intensity _(Not widely supported)_
-- `ColoredLineFormatter::ATTRIBUTE_ITALIC`: Italic _(Not widely supported)_
-- `ColoredLineFormatter::ATTRIBUTE_UNDERLINE`: Underline (single)
-- `ColoredLineFormatter::ATTRIBUTE_BLINK`: Blinking _(Not widely supported)_
-- `ColoredLineFormatter::ATTRIBUTE_BLINK_RAPID`: Fast Blinking _(Not widely supported)_
-- `ColoredLineFormatter::ATTRIBUTE_REVERSE`: Swap foreground and background
-- `ColoredLineFormatter::ATTRIBUTE_CONCEAL`: Concealed/Hidden _(Not widely supported)_
-- `ColoredLineFormatter::ATTRIBUTE_STRIKETHROUGH`: Crossed-out _(Not widely supported)_
-
-### Coloring Options
-
-- `ColoredLineFormatter::COLORING_FOREGROUND`: Set passed in `$color` as text color
-- `ColoredLineFormatter::COLORING_FOREGROUND_HIGH`: Set passed in `$color` as text color (high intensity)
-- `ColoredLineFormatter::COLORING_BACKGROUND`: Set passed in `$color` as background color
-- `ColoredLineFormatter::COLORING_BACKGROUND_HIGH: Set passed in `$color` as background color (high intensity)
-
-Note that it's possible to combine foreground and background colors, by concatenating two `ColoredLineFormatter::formatColor($color, $attribute, $coloring)` calls:
-```
-echo ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_WHITE) . ColoredLineFormatter::formatColor(ColoredLineFormatter::COLOR_RED, '', 'background_high') . 'I am a white text on a red background' . ColoredLineFormatter::resetFormatting();
-```
+Please refer to [the `bramus/ansi-php` documentation](https://github.com/bramus/ansi-php) to define your own styles and colors.
 
 ## Unit Testing
 

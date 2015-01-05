@@ -110,7 +110,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 	 * Return the ANSI Escape Sequence to reset the formatting
 	 * @return string The ANSI Escape Sequence to reset the formatting
 	 */
-	public function resetFormatting()
+	public static function resetFormatting()
 	{
 		return "\033[0m";
 	}
@@ -160,7 +160,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
     	$colorizeTable = $this->getColorizeTable();
 
     	// Let the parent class to the formatting, yet wrap it in the color linked to the level
-        return $colorizeTable[$record['level']] . trim(parent::format($record)) . $this->resetFormatting() . "\n";
+        return $colorizeTable[$record['level']] . trim(parent::format($record)) . self::resetFormatting() . "\n";
 
     }
 

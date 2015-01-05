@@ -52,7 +52,7 @@ use \Monolog\Logger;
 use \Monolog\Handler\StreamHandler;
 use \Bramus\Monolog\Formatter\ColoredLineFormatter;
 use \Bramus\Ansi\Helper;
-use \Bramus\Ansi\Escapecodes\Sgr;
+use \Bramus\Ansi\Escapecodes\SGR;
 
 $log = new Logger('DEMO');
 $handler = new StreamHandler('php://stdout', Logger::WARNING);
@@ -63,14 +63,14 @@ $log->pushHandler($handler);
 $ansiHelper = new Helper();
 
 $coloredLineFormatter->setColorizeTable(array(
-	\Monolog\Logger::DEBUG => $ansiHelper->color(Sgr::COLOR_FG_WHITE)->get(),
-    \Monolog\Logger::INFO => $ansiHelper->color(Sgr::COLOR_FG_GREEN)->get(),
-    \Monolog\Logger::NOTICE => $ansiHelper->color(Sgr::COLOR_FG_CYAN)->get(),
-    \Monolog\Logger::WARNING => $ansiHelper->color(Sgr::COLOR_FG_YELLOW)->get(),
-    \Monolog\Logger::ERROR => $ansiHelper->color(Sgr::COLOR_FG_RED)->get(),
-    \Monolog\Logger::CRITICAL => $ansiHelper->color(Sgr::COLOR_FG_RED)->underline()->get(),
-    \Monolog\Logger::ALERT => $ansiHelper->color(array(Sgr::COLOR_FG_WHITE, Sgr::COLOR_BG_RED_BRIGHT))->get(),
-    \Monolog\Logger::EMERGENCY => $ansiHelper->color(Sgr::COLOR_BG_RED_BRIGHT)->blink()->color(Sgr::COLOR_FG_WHITE)->get(),
+	\Monolog\Logger::DEBUG => $ansiHelper->color(SGR::COLOR_FG_WHITE)->get(),
+    \Monolog\Logger::INFO => $ansiHelper->color(SGR::COLOR_FG_GREEN)->get(),
+    \Monolog\Logger::NOTICE => $ansiHelper->color(SGR::COLOR_FG_CYAN)->get(),
+    \Monolog\Logger::WARNING => $ansiHelper->color(SGR::COLOR_FG_YELLOW)->get(),
+    \Monolog\Logger::ERROR => $ansiHelper->color(SGR::COLOR_FG_RED)->get(),
+    \Monolog\Logger::CRITICAL => $ansiHelper->color(SGR::COLOR_FG_RED)->underline()->get(),
+    \Monolog\Logger::ALERT => $ansiHelper->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
+    \Monolog\Logger::EMERGENCY => $ansiHelper->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
 ));
 ```
 

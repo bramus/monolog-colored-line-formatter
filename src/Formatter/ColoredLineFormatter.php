@@ -3,7 +3,7 @@
 namespace Bramus\Monolog\Formatter;
 
 use Bramus\Ansi\Helper;
-use Bramus\Ansi\Escapecodes\Sgr;
+use Bramus\Ansi\Escapecodes\SGR;
 
 /**
  * A Colored Line Formatter for Monolog
@@ -55,14 +55,14 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     {
         if (!$this->colorizeTable) {
             $this->colorizeTable = array(
-                \Monolog\Logger::DEBUG => $this->ansiHelper->color(Sgr::COLOR_FG_WHITE)->get(),
-                \Monolog\Logger::INFO => $this->ansiHelper->color(Sgr::COLOR_FG_GREEN)->get(),
-                \Monolog\Logger::NOTICE => $this->ansiHelper->color(Sgr::COLOR_FG_CYAN)->get(),
-                \Monolog\Logger::WARNING => $this->ansiHelper->color(Sgr::COLOR_FG_YELLOW)->get(),
-                \Monolog\Logger::ERROR => $this->ansiHelper->color(Sgr::COLOR_FG_RED)->get(),
-                \Monolog\Logger::CRITICAL => $this->ansiHelper->color(Sgr::COLOR_FG_RED)->underline()->get(),
-                \Monolog\Logger::ALERT => $this->ansiHelper->color(array(Sgr::COLOR_FG_WHITE, Sgr::COLOR_BG_RED_BRIGHT))->get(),
-                \Monolog\Logger::EMERGENCY => $this->ansiHelper->color(Sgr::COLOR_BG_RED_BRIGHT)->blink()->color(Sgr::COLOR_FG_WHITE)->get(),
+                \Monolog\Logger::DEBUG => $this->ansiHelper->color(SGR::COLOR_FG_WHITE)->get(),
+                \Monolog\Logger::INFO => $this->ansiHelper->color(SGR::COLOR_FG_GREEN)->get(),
+                \Monolog\Logger::NOTICE => $this->ansiHelper->color(SGR::COLOR_FG_CYAN)->get(),
+                \Monolog\Logger::WARNING => $this->ansiHelper->color(SGR::COLOR_FG_YELLOW)->get(),
+                \Monolog\Logger::ERROR => $this->ansiHelper->color(SGR::COLOR_FG_RED)->get(),
+                \Monolog\Logger::CRITICAL => $this->ansiHelper->color(SGR::COLOR_FG_RED)->underline()->get(),
+                \Monolog\Logger::ALERT => $this->ansiHelper->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
+                \Monolog\Logger::EMERGENCY => $this->ansiHelper->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
             );
         }
 

@@ -44,7 +44,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 	 * @param  string $coloring The type of coloring to apply. Allowed values: 'foreground', 'foreground_high', 'background', and 'background_high'
 	 * @return string The ANSI Escape Sequence representing the wanted color
 	 */
-	public function formatColor($color, $attribute = '', $coloring = 'foreground')
+	public static function formatColor($color, $attribute = '', $coloring = 'foreground')
 	{
 
 		// Rework $color so that it can be used
@@ -124,14 +124,14 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 	{
 		if (!$this->colorizeTable) {
 			$this->colorizeTable = array(
-				\Monolog\Logger::DEBUG => $this->formatColor(self::COLOR_WHITE),
-				\Monolog\Logger::INFO => $this->formatColor(self::COLOR_GREEN),
-				\Monolog\Logger::NOTICE => $this->formatColor(self::COLOR_CYAN),
-				\Monolog\Logger::WARNING => $this->formatColor(self::COLOR_YELLOW),
-				\Monolog\Logger::ERROR => $this->formatColor(self::COLOR_RED),
-				\Monolog\Logger::CRITICAL => $this->formatColor(self::COLOR_RED, 'underline'),
-				\Monolog\Logger::ALERT => $this->formatColor(self::COLOR_WHITE) . $this->formatColor(self::COLOR_RED, '', 'background_high'),
-				\Monolog\Logger::EMERGENCY => $this->formatColor(self::COLOR_RED, '', 'background_high') . $this->formatColor(self::COLOR_WHITE, 'blink')
+				\Monolog\Logger::DEBUG => self::formatColor(self::COLOR_WHITE),
+				\Monolog\Logger::INFO => self::formatColor(self::COLOR_GREEN),
+				\Monolog\Logger::NOTICE => self::formatColor(self::COLOR_CYAN),
+				\Monolog\Logger::WARNING => self::formatColor(self::COLOR_YELLOW),
+				\Monolog\Logger::ERROR => self::formatColor(self::COLOR_RED),
+				\Monolog\Logger::CRITICAL => self::formatColor(self::COLOR_RED, 'underline'),
+				\Monolog\Logger::ALERT => self::formatColor(self::COLOR_WHITE) . self::formatColor(self::COLOR_RED, '', 'background_high'),
+				\Monolog\Logger::EMERGENCY => self::formatColor(self::COLOR_RED, '', 'background_high') . self::formatColor(self::COLOR_WHITE, 'blink')
 			);
 		}
 

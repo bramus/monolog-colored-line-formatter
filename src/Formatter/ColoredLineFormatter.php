@@ -128,10 +128,10 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter {
 				\Monolog\Logger::INFO => $this->formatColor(self::COLOR_GREEN),
 				\Monolog\Logger::NOTICE => $this->formatColor(self::COLOR_CYAN),
 				\Monolog\Logger::WARNING => $this->formatColor(self::COLOR_YELLOW),
-				\Monolog\Logger::ERROR => $this->formatColor(self::COLOR_RED, 'underline'),
-				\Monolog\Logger::CRITICAL => $this->formatColor(self::COLOR_RED, 'bold'),
-				\Monolog\Logger::ALERT => $this->formatColor(self::COLOR_WHITE) . $this->formatColor(self::COLOR_RED, '', 'background'),
-				\Monolog\Logger::EMERGENCY => $this->formatColor(self::COLOR_WHITE, 'bold') . $this->formatColor(self::COLOR_RED, '', 'background')
+				\Monolog\Logger::ERROR => $this->formatColor(self::COLOR_RED),
+				\Monolog\Logger::CRITICAL => $this->formatColor(self::COLOR_RED, 'underline'),
+				\Monolog\Logger::ALERT => $this->formatColor(self::COLOR_WHITE) . $this->formatColor(self::COLOR_RED, '', 'background_high'),
+				\Monolog\Logger::EMERGENCY => $this->formatColor(self::COLOR_RED, '', 'background_high') . $this->formatColor(self::COLOR_WHITE, 'blink')
 			);
 		}
 

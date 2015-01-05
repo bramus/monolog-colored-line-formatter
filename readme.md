@@ -11,7 +11,7 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 
 `bramus/monolog-colored-line-formatter` ships with a default color scheme, yet it can be adjusted to fit your own needs.
 
-![Monolog Colored Line Formatter](https://raw.githubusercontent.com/bramus/monolog-colored-line-formatter/master/screenshots/colorscheme-default.png)
+![Monolog Colored Line Formatter](https://raw.githubusercontent.com/bramus/monolog-colored-line-formatter/master/screenshots/colorscheme-default.gif)
 
 
 ## Prerequisites/Requirements

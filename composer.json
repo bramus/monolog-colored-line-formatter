@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "bramus/ansi-php": "~1.0"
     },
     "require-dev": {
         "monolog/monolog": "~1.0",

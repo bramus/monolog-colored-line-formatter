@@ -82,7 +82,7 @@ Please refer to [the `bramus/ansi-php` documentation](https://github.com/bramus/
 
 - If PHPUnit is installed globally run `phpunit` to run the tests.
 
-- If PHPUnit is not installed globally, install it locally throuh composer by running `composer install --dev`. Run the tests themselves by calling `vendor/bin/phpunit`.
+- If PHPUnit is not installed globally, install it locally through composer by running `composer install --dev`. Run the tests themselves by calling `vendor/bin/phpunit`.
 
 Unit tests are also automatically run [on Travis CI](http://travis-ci.org/bramus/monolog-colored-line-formatter)
 

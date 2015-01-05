@@ -7,7 +7,7 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 
 ## About
 
-`bramus/monolog-colored-line-formatter` is a formatter for use with [Monolog](https://github.com/Seldaek/monolog). It augments the [Monolog LineFormatter](https://github.com/Seldaek/monolog/blob/master/src/Monolog/Formatter/LineFormatter.php) by adding color support. To achieve this `bramus/monolog-colored-line-formatter` uses ANSI Escape Sequences – provided by `bramus/ansi-php` – which makes it perfect for usage on text based terminals (viz. the shell).
+`bramus/monolog-colored-line-formatter` is a formatter for use with [Monolog](https://github.com/Seldaek/monolog). It augments the [Monolog LineFormatter](https://github.com/Seldaek/monolog/blob/master/src/Monolog/Formatter/LineFormatter.php) by adding color support. To achieve this `bramus/monolog-colored-line-formatter` uses ANSI Escape Sequences – [provided by `bramus/ansi-php`](https://github.com/bramus/ansi-php) – which makes it perfect for usage on text based terminals (viz. the shell).
 
 `bramus/monolog-colored-line-formatter` ships with a default color scheme, yet it can be adjusted to fit your own needs.
 

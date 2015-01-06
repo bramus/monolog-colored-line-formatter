@@ -1,5 +1,6 @@
 <?php
 
+use \Monolog\Logger;
 use \Bramus\Monolog\Formatter\ColoredLineFormatter;
 
 class ColoredLineFormatterTest extends PHPUnit_Framework_TestCase
@@ -26,10 +27,10 @@ class ColoredLineFormatterTest extends PHPUnit_Framework_TestCase
 
     // public function testDemo()
     // {
-    //     foreach (\Monolog\Logger::getLevels() as $level) {
+    //     foreach (Logger::getLevels() as $level) {
     //         echo $this->clf->format(array(
     //             'level' => $level,
-    //             'level_name' => \Monolog\Logger::getLevelName($level),
+    //             'level_name' => Logger::getLevelName($level),
     //             'channel' => 'DEMO',
     //             'message' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     //             'datetime' => \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), new \DateTimeZone(date_default_timezone_get() ?: 'UTC')),

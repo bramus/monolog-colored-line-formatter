@@ -8,24 +8,22 @@ use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
 
 class DefaultScheme implements ColorSchemeInterface
 {
-
-	/**
-	 * Use the ColorScheme and alias its constructor
-	 */
-	use ColorSchemeTrait {
+    /**
+     * Use the ColorScheme and alias its constructor
+     */
+    use ColorSchemeTrait {
         ColorSchemeTrait::__construct as private __constructTrait;
-	}
+    }
 
-	/**
-	 * [__construct description]
-	 */
+    /**
+     * [__construct description]
+     */
     public function __construct()
     {
+        // Call Trait Constructor, so that we have $this->ansi available
+        $this->__constructTrait();
 
-    	// Call Trait Constructor, so that we have $this->ansi available
-    	$this->__constructTrait();
-
-    	// Our Color Scheme
+        // Our Color Scheme
         $this->setColorizeArray(array(
             Logger::DEBUG => $this->ansi->color(SGR::COLOR_FG_WHITE)->get(),
             Logger::INFO => $this->ansi->color(SGR::COLOR_FG_GREEN)->get(),
@@ -36,7 +34,5 @@ class DefaultScheme implements ColorSchemeInterface
             Logger::ALERT => $this->ansi->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
             Logger::EMERGENCY => $this->ansi->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
         ));
-
     }
-
 }

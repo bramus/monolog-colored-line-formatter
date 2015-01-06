@@ -3,11 +3,9 @@
 namespace Bramus\Monolog\Formatter\ColorSchemes;
 
 use Bramus\Ansi\Ansi;
-use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
 
 trait ColorSchemeTrait
 {
-
     /**
      * ANSI Wrapper which provides colors
      * @var \Bramus\Ansi\Ansi
@@ -35,14 +33,13 @@ trait ColorSchemeTrait
      */
     public function setColorizeArray(array $colorScheme)
     {
+        // Only store entries that exist as Monolog\Logger levels
+        $allowedLogLevels = array_values(\Monolog\Logger::getLevels());
+        $colorScheme = array_filter($colorScheme, function ($k) use ($allowedLogLevels) {
+            return in_array($k, $allowedLogLevels);
+        }, ARRAY_FILTER_USE_KEY);
 
-    	// Only store entries that exist as Monolog\Logger levels
-    	$allowedLogLevels = array_values(\Monolog\Logger::getLevels());
-    	$colorScheme = array_filter($colorScheme, function($k) use ($allowedLogLevels) {
-    		return in_array($k, $allowedLogLevels);
-    	}, ARRAY_FILTER_USE_KEY);
-
-    	// Store the filtered colorScheme
+        // Store the filtered colorScheme
         $this->colorScheme = $colorScheme;
     }
 
@@ -57,12 +54,12 @@ trait ColorSchemeTrait
 
     /**
      * Get the Color Scheme String for the given Level
-     * @param  int $level The Logger Level
+     * @param  int    $level The Logger Level
      * @return string The Color Scheme String
      */
     public function getColorizeString($level)
     {
-    	return isset($this->colorScheme[$level]) ? $this->colorScheme[$level] : '';
+        return isset($this->colorScheme[$level]) ? $this->colorScheme[$level] : '';
     }
 
     /**
@@ -71,6 +68,6 @@ trait ColorSchemeTrait
      */
     public function getResetString()
     {
-    	return $this->ansi->reset()->get();
+        return $this->ansi->reset()->get();
     }
 }

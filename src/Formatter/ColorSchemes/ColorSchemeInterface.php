@@ -2,8 +2,8 @@
 
 namespace Bramus\Monolog\Formatter\ColorSchemes;
 
-interface ColorSchemeInterface {
-
+interface ColorSchemeInterface
+{
     /**
      * Set the Color Scheme
      * @param array $colorScheme The Color Scheme
@@ -18,7 +18,7 @@ interface ColorSchemeInterface {
 
     /**
      * Get the Color Scheme String for the given Level
-     * @param  int $level The Logger Level
+     * @param  int    $level The Logger Level
      * @return string The Color Scheme String
      */
     public function getColorizeString($level);
@@ -28,5 +28,4 @@ interface ColorSchemeInterface {
      * @return string The reset code
      */
     public function getResetString();
-
 }

@@ -24,6 +24,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
         if (!$this->colorScheme) {
             $this->colorScheme = new ColorSchemes\DefaultScheme();
         }
+
         return $this->colorScheme;
     }
 

@@ -16,7 +16,7 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 
 ## Prerequisites/Requirements
 
-- PHP 5.3.3 or greater
+- PHP 5.4.0 or greater
 
 ## Installation
 

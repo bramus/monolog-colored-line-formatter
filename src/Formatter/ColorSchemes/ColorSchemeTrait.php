@@ -37,7 +37,8 @@ trait ColorSchemeTrait
         $allowedLogLevels = array_values(\Monolog\Logger::getLevels());
         $colorScheme = array_filter($colorScheme, function ($k) use ($allowedLogLevels) {
             return in_array($k, $allowedLogLevels);
-        }, ARRAY_FILTER_USE_KEY);
+        // }, ARRAY_FILTER_USE_KEY);
+        });
 
         // Store the filtered colorScheme
         $this->colorScheme = $colorScheme;

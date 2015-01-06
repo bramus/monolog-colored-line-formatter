@@ -2,8 +2,8 @@
 
 namespace Bramus\Monolog\Formatter;
 
-use Bramus\Ansi\Helper;
-use Bramus\Ansi\Escapecodes\SGR;
+use Bramus\Ansi\Ansi;
+use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
 
 /**
  * A Colored Line Formatter for Monolog
@@ -12,10 +12,10 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
 {
 
     /**
-     * The ANSI Helper which provides colors
-     * @var \Bramus\Ansi\Helper
+     * ANSI Wrapper which provides colors
+     * @var \Bramus\Ansi\Ansi
      */
-    private $ansiHelper = null;
+    private $ansi = null;
 
     /**
      * The color scheme to be applied
@@ -31,8 +31,8 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
      */
     public function __construct($format = null, $dateFormat = null, $allowInlineLineBreaks = false, $ignoreEmptyContextAndExtra = false)
     {
-        // Create ansiHelper
-        $this->ansiHelper = new Helper();
+        // Create ansi
+        $this->ansi = new Ansi();
 
         // Call Parent Constructor
         parent::__construct($format, $dateFormat, $allowInlineLineBreaks, $ignoreEmptyContextAndExtra);
@@ -44,7 +44,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
      */
     public function resetFormatting()
     {
-        return $this->ansiHelper->reset()->get();
+        return $this->ansi->reset()->get();
     }
 
     /**
@@ -55,14 +55,14 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     {
         if (!$this->colorizeTable) {
             $this->colorizeTable = array(
-                \Monolog\Logger::DEBUG => $this->ansiHelper->color(SGR::COLOR_FG_WHITE)->get(),
-                \Monolog\Logger::INFO => $this->ansiHelper->color(SGR::COLOR_FG_GREEN)->get(),
-                \Monolog\Logger::NOTICE => $this->ansiHelper->color(SGR::COLOR_FG_CYAN)->get(),
-                \Monolog\Logger::WARNING => $this->ansiHelper->color(SGR::COLOR_FG_YELLOW)->get(),
-                \Monolog\Logger::ERROR => $this->ansiHelper->color(SGR::COLOR_FG_RED)->get(),
-                \Monolog\Logger::CRITICAL => $this->ansiHelper->color(SGR::COLOR_FG_RED)->underline()->get(),
-                \Monolog\Logger::ALERT => $this->ansiHelper->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
-                \Monolog\Logger::EMERGENCY => $this->ansiHelper->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
+                \Monolog\Logger::DEBUG => $this->ansi->color(SGR::COLOR_FG_WHITE)->get(),
+                \Monolog\Logger::INFO => $this->ansi->color(SGR::COLOR_FG_GREEN)->get(),
+                \Monolog\Logger::NOTICE => $this->ansi->color(SGR::COLOR_FG_CYAN)->get(),
+                \Monolog\Logger::WARNING => $this->ansi->color(SGR::COLOR_FG_YELLOW)->get(),
+                \Monolog\Logger::ERROR => $this->ansi->color(SGR::COLOR_FG_RED)->get(),
+                \Monolog\Logger::CRITICAL => $this->ansi->color(SGR::COLOR_FG_RED)->underline()->get(),
+                \Monolog\Logger::ALERT => $this->ansi->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
+                \Monolog\Logger::EMERGENCY => $this->ansi->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
             );
         }
 

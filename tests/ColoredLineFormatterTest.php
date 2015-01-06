@@ -21,7 +21,7 @@ class ColoredLineFormatterTest extends PHPUnit_Framework_TestCase
 
     public function testReset()
     {
-        $this->assertEquals($this->clf->resetFormatting(), "\033[0m");
+        $this->assertEquals($this->clf->getColorScheme()->getResetString(), "\033[0m");
     }
 
     // public function testDemo()

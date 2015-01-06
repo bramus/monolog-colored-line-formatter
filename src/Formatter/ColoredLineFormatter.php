@@ -2,80 +2,38 @@
 
 namespace Bramus\Monolog\Formatter;
 
-use Bramus\Ansi\Ansi;
-use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
+use Bramus\Monolog\Formatter\ColorSchemes\ColorSchemeInterface;
 
 /**
  * A Colored Line Formatter for Monolog
  */
 class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
 {
+    /**
+     * The Color Scheme to use
+     * @var ColorSchemeInterface
+     */
+    private $colorScheme = null;
 
     /**
-     * ANSI Wrapper which provides colors
-     * @var \Bramus\Ansi\Ansi
+     * Gets The Color Scheme
+     * @return ColorSchemeInterface
      */
-    private $ansi = null;
-
-    /**
-     * The color scheme to be applied
-     * @var array
-     */
-    private $colorizeTable = null;
-
-    /**
-     * @param string $format                     The format of the message
-     * @param string $dateFormat                 The format of the timestamp: one supported by DateTime::format
-     * @param bool   $allowInlineLineBreaks      Whether to allow inline line breaks in log entries
-     * @param bool   $ignoreEmptyContextAndExtra
-     */
-    public function __construct($format = null, $dateFormat = null, $allowInlineLineBreaks = false, $ignoreEmptyContextAndExtra = false)
+    public function getColorScheme()
     {
-        // Create ansi
-        $this->ansi = new Ansi();
-
-        // Call Parent Constructor
-        parent::__construct($format, $dateFormat, $allowInlineLineBreaks, $ignoreEmptyContextAndExtra);
-    }
-
-    /**
-     * Return the ANSI Escape Sequence to reset the formatting
-     * @return string The ANSI Escape Sequence to reset the formatting
-     */
-    public function resetFormatting()
-    {
-        return $this->ansi->reset()->get();
-    }
-
-    /**
-     * Gets the colorize table / color scheme to use
-     * @return array
-     */
-    public function getColorizeTable()
-    {
-        if (!$this->colorizeTable) {
-            $this->colorizeTable = array(
-                \Monolog\Logger::DEBUG => $this->ansi->color(SGR::COLOR_FG_WHITE)->get(),
-                \Monolog\Logger::INFO => $this->ansi->color(SGR::COLOR_FG_GREEN)->get(),
-                \Monolog\Logger::NOTICE => $this->ansi->color(SGR::COLOR_FG_CYAN)->get(),
-                \Monolog\Logger::WARNING => $this->ansi->color(SGR::COLOR_FG_YELLOW)->get(),
-                \Monolog\Logger::ERROR => $this->ansi->color(SGR::COLOR_FG_RED)->get(),
-                \Monolog\Logger::CRITICAL => $this->ansi->color(SGR::COLOR_FG_RED)->underline()->get(),
-                \Monolog\Logger::ALERT => $this->ansi->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
-                \Monolog\Logger::EMERGENCY => $this->ansi->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
-            );
+        if (!$this->colorScheme) {
+            $this->colorScheme = new ColorSchemes\DefaultScheme();
         }
-
-        return $this->colorizeTable;
+        return $this->colorScheme;
     }
 
     /**
-     * Sets the colorize table
+     * Sets The Color Scheme
      * @param array
      */
-    public function setColorizeTable($table)
+    public function setColorScheme(ColorSchemeInterface $colorScheme)
     {
-        $this->colorizeTable = $table;
+        $this->colorScheme = $colorScheme;
     }
 
     /**
@@ -83,10 +41,10 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
      */
     public function format(array $record)
     {
-        // Get colorize table
-        $colorizeTable = $this->getColorizeTable();
+        // Get the Color Scheme
+        $colorScheme = $this->getColorScheme();
 
         // Let the parent class to the formatting, yet wrap it in the color linked to the level
-        return $colorizeTable[$record['level']].trim(parent::format($record)).$this->resetFormatting()."\n";
+        return $colorScheme->getColorizeString($record['level']).trim(parent::format($record)).$colorScheme->getResetString()."\n";
     }
 }

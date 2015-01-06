@@ -11,9 +11,6 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 
 `bramus/monolog-colored-line-formatter` ships with a default color scheme, yet it can be adjusted to fit your own needs.
 
-![Monolog Colored Line Formatter](https://raw.githubusercontent.com/bramus/monolog-colored-line-formatter/master/screenshots/colorscheme-default.gif)
-
-
 ## Prerequisites/Requirements
 
 - PHP 5.4.0 or greater
@@ -23,7 +20,7 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 Installation is possible using Composer
 
 ```
-composer require bramus/monolog-colored-line-formatter ~1.0
+composer require bramus/monolog-colored-line-formatter ~2.0
 ```
 
 ## Usage
@@ -43,35 +40,79 @@ $log->pushHandler($handler);
 $log->addError('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
 ```
 
-## Custom Color Schemes
+## Color Schemes
 
-Make sure that upon creation of a new `ColoredLineFormatter` instance you store it in a variable for later use. On that instance call `setColorizeTable()` with one argument: an array specifying a color to use for each `\Monolog\Logger` level
+### Available Color Schemes
+
+#### Color Scheme: DefaultScheme
+
+![Monolog Colored Line Formatter](https://raw.githubusercontent.com/bramus/monolog-colored-line-formatter/master/screenshots/colorscheme-default.gif)
+
+#### Color Scheme: TrafficLight
+
+![Monolog Colored Line Formatter](https://raw.githubusercontent.com/bramus/monolog-colored-line-formatter/master/screenshots/colorscheme-trafficlight.gif)
+
+### Activating a Color Scheme
+
+Color Schemes are defined as classes. If you do not provide any color scheme the default one will be used.
+
+To activate a color scheme pass it as the first argument of the `ColoredLineFormatter` Constructor. All successive arguments are the ones as required by the `\Monolog\Formatter\LineFormatter` class.
 
 ```
 use \Monolog\Logger;
 use \Monolog\Handler\StreamHandler;
 use \Bramus\Monolog\Formatter\ColoredLineFormatter;
-use \Bramus\Ansi\Helper;
-use \Bramus\Ansi\Escapecodes\SGR;
+use \Bramus\Monolog\Formatter\ColorSchemes\TrafficLight;
 
 $log = new Logger('DEMO');
 $handler = new StreamHandler('php://stdout', Logger::WARNING);
-$coloredLineFormatter = new ColoredLineFormatter();
-$handler->setFormatter($coloredLineFormatter);
+$handler->setFormatter(new ColoredLineFormatter(new TrafficLight()));
 $log->pushHandler($handler);
+```
 
-$ansiHelper = new Helper();
+Alternatively it's also possible to activate it using the `setColorScheme()` method of a `ColoredLineFormatter` instance.
 
-$coloredLineFormatter->setColorizeTable(array(
-	\Monolog\Logger::DEBUG => $ansiHelper->color(SGR::COLOR_FG_WHITE)->get(),
-    \Monolog\Logger::INFO => $ansiHelper->color(SGR::COLOR_FG_GREEN)->get(),
-    \Monolog\Logger::NOTICE => $ansiHelper->color(SGR::COLOR_FG_CYAN)->get(),
-    \Monolog\Logger::WARNING => $ansiHelper->color(SGR::COLOR_FG_YELLOW)->get(),
-    \Monolog\Logger::ERROR => $ansiHelper->color(SGR::COLOR_FG_RED)->get(),
-    \Monolog\Logger::CRITICAL => $ansiHelper->color(SGR::COLOR_FG_RED)->underline()->get(),
-    \Monolog\Logger::ALERT => $ansiHelper->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
-    \Monolog\Logger::EMERGENCY => $ansiHelper->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
-));
+### Creating your own Custom Color Scheme
+
+To define your own color scheme make a class that implements the `\Bramus\Monolog\Formatter\ColorSchemes\ColorSchemeInterface` interface. To make things more easy a trait `ColorSchemeTrait` is defined.
+
+```
+namespace Bramus\Monolog\Formatter\ColorSchemes;
+
+use Monolog\Logger;
+use Bramus\Ansi\Ansi;
+use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
+
+class TrafficLight implements ColorSchemeInterface
+{
+    /**
+     * Use the ColorSchemeTrait and alias its constructor
+     */
+    use ColorSchemeTrait {
+        ColorSchemeTrait::__construct as private __constructTrait;
+    }
+
+    /**
+     * [__construct description]
+     */
+    public function __construct()
+    {
+        // Call Trait Constructor, so that we have $this->ansi available
+        $this->__constructTrait();
+
+        // Our Color Scheme
+        $this->setColorizeArray(array(
+            Logger::DEBUG => $this->ansi->color(SGR::COLOR_FG_WHITE)->get(),
+            Logger::INFO => $this->ansi->color(SGR::COLOR_FG_GREEN)->get(),
+            Logger::NOTICE => $this->ansi->color(SGR::COLOR_FG_CYAN)->get(),
+            Logger::WARNING => $this->ansi->color(SGR::COLOR_FG_YELLOW)->get(),
+            Logger::ERROR => $this->ansi->color(SGR::COLOR_FG_RED)->get(),
+            Logger::CRITICAL => $this->ansi->color(SGR::COLOR_FG_RED)->underline()->get(),
+            Logger::ALERT => $this->ansi->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
+            Logger::EMERGENCY => $this->ansi->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
+        ));
+    }
+}
 ```
 
 Please refer to [the `bramus/ansi-php` documentation](https://github.com/bramus/ansi-php) to define your own styles and colors.

@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "de74dc9fc8b16d8c4f5e5d27970a31c1",
+    "hash": "c4dc42d9548ca19ad08fdf7d5d3b7784",
     "packages": [
         {
             "name": "bramus/ansi-php",
-            "version": "2.1",
+            "version": "3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bramus/ansi-php.git",
-                "reference": "4943fa90e24bfcdcbcb6b388667d0782233b08eb"
+                "reference": "fba7715a85c9db8246bd8cf02b607cdf518face7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bramus/ansi-php/zipball/4943fa90e24bfcdcbcb6b388667d0782233b08eb",
-                "reference": "4943fa90e24bfcdcbcb6b388667d0782233b08eb",
+                "url": "https://api.github.com/repos/bramus/ansi-php/zipball/fba7715a85c9db8246bd8cf02b607cdf518face7",
+                "reference": "fba7715a85c9db8246bd8cf02b607cdf518face7",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 }
             ],
             "description": "ANSI Control Functions and ANSI Control Sequences (Colors, Erasing, etc.) for PHP CLI Apps",
-            "time": "2015-01-07 15:03:19"
+            "time": "2015-01-07 21:02:00"
         }
     ],
     "packages-dev": [

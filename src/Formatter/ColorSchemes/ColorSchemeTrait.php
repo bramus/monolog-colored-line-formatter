@@ -3,6 +3,7 @@
 namespace Bramus\Monolog\Formatter\ColorSchemes;
 
 use Bramus\Ansi\Ansi;
+use Bramus\Ansi\Writers\BufferWriter;
 
 trait ColorSchemeTrait
 {
@@ -24,7 +25,7 @@ trait ColorSchemeTrait
     public function __construct()
     {
         // Create Ansi helper
-        $this->ansi = new Ansi();
+        $this->ansi = new Ansi(new BufferWriter());
     }
 
     /**

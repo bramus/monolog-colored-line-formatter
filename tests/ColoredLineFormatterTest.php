@@ -3,13 +3,14 @@
 use \Monolog\Logger;
 use \Bramus\Monolog\Formatter\ColoredLineFormatter;
 use Bramus\Ansi\Ansi;
+use Bramus\Ansi\Writers\BufferWriter;
 use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
 
 class ColoredLineFormatterTest extends PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->ansi = new Ansi();
+        $this->ansi = new Ansi(new BufferWriter());
         $this->clf = new ColoredLineFormatter();
     }
 

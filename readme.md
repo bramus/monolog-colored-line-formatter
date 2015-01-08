@@ -1,9 +1,9 @@
 # Monolog Colored Line Formatter
 
+[![Build Status](https://img.shields.io/travis/bramus/monolog-colored-line-formatter.svg?style=flat-square)](http://travis-ci.org/bramus/monolog-colored-line-formatter) ![Source](http://img.shields.io/badge/source-bramus/monolog--colored--line--formatter-blue.svg?style=flat-square) ![Version](https://img.shields.io/packagist/v/bramus/monolog-colored-line-formatter.svg?style=flat-square) ![Downloads](https://img.shields.io/packagist/dt/bramus/monolog-colored-line-formatter.svg?style=flat-square) ![License](https://img.shields.io/packagist/l/bramus/monolog-colored-line-formatter.svg?style=flat-square)
+
 A Formatter for Monolog with color support
 Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
-
-[![Build Status](https://api.travis-ci.org/bramus/monolog-colored-line-formatter.png)](http://travis-ci.org/bramus/monolog-colored-line-formatter)
 
 ## About
 

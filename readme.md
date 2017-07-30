@@ -19,7 +19,7 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 
 Installation is possible using Composer
 
-```
+```bash
 composer require bramus/monolog-colored-line-formatter ~2.0
 ```
 
@@ -27,7 +27,7 @@ composer require bramus/monolog-colored-line-formatter ~2.0
 
 Create an instance of `\Bramus\Monolog\Formatter\ColoredLineFormatter` and set it as the formatter for the `\Monolog\Handler\StreamHandler` that you use with your `\Monolog\Logger` instance.
 
-```
+```php
 use \Monolog\Logger;
 use \Monolog\Handler\StreamHandler;
 use \Bramus\Monolog\Formatter\ColoredLineFormatter;
@@ -58,7 +58,7 @@ Color Schemes are defined as classes. If you do not provide any color scheme the
 
 To activate a color scheme pass it as the first argument of the `ColoredLineFormatter` Constructor. All successive arguments are the ones as required by the `\Monolog\Formatter\LineFormatter` class.
 
-```
+```php
 use \Monolog\Logger;
 use \Monolog\Handler\StreamHandler;
 use \Bramus\Monolog\Formatter\ColoredLineFormatter;
@@ -76,7 +76,7 @@ Alternatively it's also possible to activate it using the `setColorScheme()` met
 
 To define your own color scheme make a class that implements the `\Bramus\Monolog\Formatter\ColorSchemes\ColorSchemeInterface` interface. To make things more easy a trait `ColorSchemeTrait` is defined.
 
-```
+```php
 namespace Bramus\Monolog\Formatter\ColorSchemes;
 
 use Monolog\Logger;

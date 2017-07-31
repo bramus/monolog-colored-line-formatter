@@ -46,11 +46,11 @@ $log->addError('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
 
 #### Color Scheme: DefaultScheme
 
-![Monolog Colored Line Formatter](https://raw.githubusercontent.com/bramus/monolog-colored-line-formatter/master/screenshots/colorscheme-default.gif)
+![Monolog Colored Line Formatter](https://user-images.githubusercontent.com/11269635/28756233-c9f63abe-756a-11e7-883f-a084f35c55e7.gif)
 
 #### Color Scheme: TrafficLight
 
-![Monolog Colored Line Formatter](https://raw.githubusercontent.com/bramus/monolog-colored-line-formatter/master/screenshots/colorscheme-trafficlight.gif)
+![Monolog Colored Line Formatter](https://user-images.githubusercontent.com/11269635/28756238-df0a5598-756a-11e7-929a-201bef89e6a2.gif)
 
 ### Activating a Color Scheme
 

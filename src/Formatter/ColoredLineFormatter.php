@@ -55,7 +55,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(array $record)
+    public function format(array $record) : string
     {
         // Get the Color Scheme
         $colorScheme = $this->getColorScheme();

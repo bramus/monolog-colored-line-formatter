@@ -10,11 +10,11 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": "^7.1",
         "bramus/ansi-php": "~3.0"
     },
     "require-dev": {
-        "monolog/monolog": "~1.0",
+        "monolog/monolog": "2.x-dev",
         "phpunit/phpunit": "~4.0"
     },
     "autoload": {

@@ -1,7 +1,11 @@
 language: php
+
+dist: trusty
+
 php:
-  - "5.6"
-  - "5.5"
-  - "5.4"
+  - 7.1
+  - 7.2
+  - 7.3
+  - nightly
 
 before_script: composer install

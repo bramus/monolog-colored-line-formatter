@@ -13,7 +13,7 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 
 ## Prerequisites/Requirements
 
-- PHP 7.1 or greater
+- PHP 7.2 or greater
 - Monolog 2.0 or greater
 
 _Looking for a version compatible with Monolog 1.x? Check out the `monolog-1.x` branch then. The version of `monolog-colored-line-formatter` that is compatible with Monolog 1.x, is `monolog-colored-line-formatter` version `~2.0`_

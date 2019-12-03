@@ -21,5 +21,8 @@
         "psr-4": {
             "Bramus\\Monolog\\": "src/"
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always"
     }
 }

@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "bramus/ansi-php": "~3.0"
+        "bramus/ansi-php": "^3.0.3"
     },
     "require-dev": {
         "monolog/monolog": "~2.0",

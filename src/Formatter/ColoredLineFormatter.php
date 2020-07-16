@@ -75,8 +75,8 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
 
         // Otherwise replace the begin and end token with the colorize strings
         $replace = [
-            self::BEGIN_TOKEN => $this->colorScheme->getColorizeString($record['level']),
-            self::END_TOKEN => $this->colorScheme->getResetString(),
+            self::BEGIN_TOKEN => $colorScheme->getColorizeString($record['level']),
+            self::END_TOKEN => $colorScheme->getResetString(),
         ];
         foreach ($replace as $var => $val) {
             if (false !== strpos($output, '%'.$var.'%')) {

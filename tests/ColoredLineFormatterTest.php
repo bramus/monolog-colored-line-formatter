@@ -1,5 +1,6 @@
 <?php
 
+use Bramus\Monolog\Formatter\ColorSchemes\ColorSchemeInterface;
 use \Monolog\Logger;
 use \Bramus\Monolog\Formatter\ColoredLineFormatter;
 use Bramus\Ansi\Ansi;
@@ -8,6 +9,16 @@ use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
 
 class ColoredLineFormatterTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var Ansi
+     */
+    private $ansi;
+
+    /**
+     * @var ColoredLineFormatter
+     */
+    private $clf;
+
     protected function setUp(): void
     {
         $this->ansi = new Ansi(new BufferWriter());
@@ -91,6 +102,58 @@ class ColoredLineFormatterTest extends \PHPUnit\Framework\TestCase
 
     }
 
+    /**
+     * Assert the entire line will be colorized if the color token is not in format
+     */
+    public function testFormatColorizesEntireLineByDefault()
+    {
+        $colorScheme = $this->createMock(ColorSchemeInterface::class);
+        $colorScheme->expects($this->once())->method('getColorizeString')->willReturn('foo');
+        $colorScheme->expects($this->once())->method('getResetString')->willReturn('bar');
+
+        $record = array(
+             'level' => Logger::INFO,
+             'level_name' => Logger::getLevelName(Logger::INFO),
+             'channel' => 'DEMO',
+             'message' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+             'datetime' => new \DateTime(),
+             'context' => array(),
+             'extra' => array()
+        );
+
+        $formatter = new ColoredLineFormatter($colorScheme);
+        $output = $formatter->format($record);
+        $this->assertRegExp('/^foo.+bar\\n$/',$output);
+    }
+
+    /**
+     * Assert that the color tokens are replaced with colorize strings from format
+     */
+    public function testFormatReplacesTokensWithColorizeStrings()
+    {
+        $colorScheme = $this->createMock(ColorSchemeInterface::class);
+        $colorScheme->expects($this->once())->method('getColorizeString')->willReturn('foo');
+        $colorScheme->expects($this->once())->method('getResetString')->willReturn('bar');
+
+        $level = Logger::INFO;
+        $levelName = Logger::getLevelName($level);
+
+        $record = array(
+            'level' => $level,
+            'level_name' => $levelName,
+            'channel' => 'DEMO',
+            'message' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'datetime' => new \DateTime(),
+            'context' => array(),
+            'extra' => array()
+        );
+
+        $format = "[%datetime%] %channel%.%color_begin%%level_name%%color_end%: %message% %context% %extra%\n";
+        $formatter = new ColoredLineFormatter($colorScheme, $format);
+        $output = $formatter->format($record);
+        $this->assertRegExp("/^.+foo{$levelName}bar.+$/",$output);
+    }
+
     // public function testDemo()
     // {
     //     foreach (Logger::getLevels() as $level) {
@@ -105,6 +168,24 @@ class ColoredLineFormatterTest extends \PHPUnit\Framework\TestCase
     //         ));
     //     }
     // }
+
+//    public function testDemoTokens()
+//    {
+//        $format = "[%datetime%] %channel%.%color_begin%%level_name%%color_end%: %message% %context% %extra%\n";
+//        $formatter = new ColoredLineFormatter(null, $format);
+//
+//        foreach (Logger::getLevels() as $level) {
+//            echo $formatter->format(array(
+//                'level' => $level,
+//                'level_name' => Logger::getLevelName($level),
+//                'channel' => 'DEMO',
+//                'message' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+//                'datetime' => \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), new \DateTimeZone(date_default_timezone_get() ?: 'UTC')),
+//                'context' => array(),
+//                'extra' => array(),
+//            ));
+//        }
+//    }
 }
 
 // EOF

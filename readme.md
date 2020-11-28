@@ -1,6 +1,6 @@
 # Monolog Colored Line Formatter
 
-[![Build Status](https://img.shields.io/travis/bramus/monolog-colored-line-formatter.svg?style=flat-square)](http://travis-ci.org/bramus/monolog-colored-line-formatter) [![Source](http://img.shields.io/badge/source-bramus/monolog--colored--line--formatter-blue.svg?style=flat-square)](https://github.com/bramus/monolog-colored-line-formatter) [![Version](https://img.shields.io/packagist/v/bramus/monolog-colored-line-formatter.svg?style=flat-square)](https://packagist.org/packages/bramus/monolog-colored-line-formatter) [![Downloads](https://img.shields.io/packagist/dt/bramus/monolog-colored-line-formatter.svg?style=flat-square)](https://packagist.org/packages/bramus/monolog-colored-line-formatter/stats) [![License](https://img.shields.io/packagist/l/bramus/monolog-colored-line-formatter.svg?style=flat-square)](https://github.com/bramus/monolog-colored-line-formatter/blob/master/LICENSE.txt)
+![Build Status](https://github.com/bramus/monolog-colored-line-formatter/workflows/CI/badge.svg) [![Source](http://img.shields.io/badge/source-bramus/monolog--colored--line--formatter-blue.svg?style=flat-square)](https://github.com/bramus/monolog-colored-line-formatter) [![Version](https://img.shields.io/packagist/v/bramus/monolog-colored-line-formatter.svg?style=flat-square)](https://packagist.org/packages/bramus/monolog-colored-line-formatter) [![Downloads](https://img.shields.io/packagist/dt/bramus/monolog-colored-line-formatter.svg?style=flat-square)](https://packagist.org/packages/bramus/monolog-colored-line-formatter/stats) [![License](https://img.shields.io/packagist/l/bramus/monolog-colored-line-formatter.svg?style=flat-square)](https://github.com/bramus/monolog-colored-line-formatter/blob/master/LICENSE.txt)
 
 A Formatter for Monolog with color support
 Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
@@ -136,7 +136,7 @@ Please refer to [the `bramus/ansi-php` documentation](https://github.com/bramus/
 
 - If PHPUnit is not installed globally, install it locally through composer by running `composer install --dev`. Run the tests themselves by calling `vendor/bin/phpunit`.
 
-Unit tests are also automatically run [on Travis CI](http://travis-ci.org/bramus/monolog-colored-line-formatter)
+Unit tests are also automatically run [on GitHub Actions](https://github.com/bramus/monolog-colored-line-formatter/actions?query=workflow%3ACI)
 
 ## License
 

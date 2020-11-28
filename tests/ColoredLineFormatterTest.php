@@ -8,13 +8,13 @@ use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
 
 class ColoredLineFormatterTest extends \PHPUnit\Framework\TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->ansi = new Ansi(new BufferWriter());
         $this->clf = new ColoredLineFormatter();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // ...
     }

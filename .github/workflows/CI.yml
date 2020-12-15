@@ -22,6 +22,8 @@ jobs:
         run: rm composer.lock
       - name: Install dependencies
         run: composer update --no-interaction --prefer-dist ${{ matrix.dependencies }}
+      - name: Update PHPUnit
+        run: composer update phpunit/phpunit --no-interaction --prefer-dist
       - name: Configure PHPUnit problem matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
       - name: Run tests

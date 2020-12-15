@@ -9,6 +9,9 @@ use Bramus\Monolog\Formatter\ColorSchemes\ColorSchemeInterface;
  */
 class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
 {
+    const BEGIN_TOKEN = 'color_begin';
+    const END_TOKEN =   'color_end';
+
     /**
      * The Color Scheme to use
      * @var ColorSchemeInterface
@@ -16,10 +19,11 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     private $colorScheme = null;
 
     /**
-     * @param string $format                     The format of the message
-     * @param string $dateFormat                 The format of the timestamp: one supported by DateTime::format
-     * @param bool   $allowInlineLineBreaks      Whether to allow inline line breaks in log entries
-     * @param bool   $ignoreEmptyContextAndExtra
+     * @param ColorSchemeInterface $colorScheme                The color scheme to use
+     * @param string               $format                     The format of the message
+     * @param string               $dateFormat                 The format of the timestamp: one supported by DateTime::format
+     * @param bool                 $allowInlineLineBreaks      Whether to allow inline line breaks in log entries
+     * @param bool                 $ignoreEmptyContextAndExtra
      */
     public function __construct($colorScheme = null, $format = null, $dateFormat = null, $allowInlineLineBreaks = false, $ignoreEmptyContextAndExtra = false)
     {
@@ -45,7 +49,8 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
 
     /**
      * Sets The Color Scheme
-     * @param array
+     *
+     * @param ColorSchemeInterface $colorScheme
      */
     public function setColorScheme(ColorSchemeInterface $colorScheme)
     {
@@ -61,6 +66,24 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
         $colorScheme = $this->getColorScheme();
 
         // Let the parent class to the formatting, yet wrap it in the color linked to the level
-        return $colorScheme->getColorizeString($record['level']).trim(parent::format($record)).$colorScheme->getResetString()."\n";
+        $output = parent::format($record);
+
+        // If the begin color token is not found, colorize the entire string and return
+        if(false === strpos($output,'%' . self::BEGIN_TOKEN . '%')){
+            return $colorScheme->getColorizeString($record['level']).trim($output).$colorScheme->getResetString()."\n";
+        }
+
+        // Otherwise replace the begin and end token with the colorize strings
+        $replace = [
+            self::BEGIN_TOKEN => $colorScheme->getColorizeString($record['level']),
+            self::END_TOKEN => $colorScheme->getResetString(),
+        ];
+        foreach ($replace as $var => $val) {
+            if (false !== strpos($output, '%'.$var.'%')) {
+                $output = str_replace('%'.$var.'%', $val, $output);
+            }
+        }
+
+        return $output;
     }
 }

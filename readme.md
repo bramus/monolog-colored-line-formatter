@@ -128,6 +128,21 @@ class TrafficLight implements ColorSchemeInterface
 
 Please refer to [the `bramus/ansi-php` documentation](https://github.com/bramus/ansi-php) to define your own styles and colors.
 
+## Custom Formatting
+You may with to colorize only a portion of the output.  For example
+
+    [add image here]
+
+To customize the formatter to only colorize a portion of the output use the `$format` parameter along with the tokens
+`%color_begin%` and `%color_end%`
+```php
+    ...
+    $format = "[%datetime%] %channel%.%color_begin%%level_name%%color_end%: %message% %context% %extra%\n";
+    $formatter = new ColoredLineFormatter(null, $format);
+    ...
+```
+
+
 ## Unit Testing
 
 `bramus/monolog-colored-line-formatter` ships with unit tests using [PHPUnit](https://github.com/sebastianbergmann/phpunit/).

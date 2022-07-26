@@ -16,10 +16,10 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     private $colorScheme = null;
 
     /**
-     * @param string $format The format of the message
-     * @param string $dateFormat The format of the timestamp: one supported by DateTime::format
-     * @param bool $allowInlineLineBreaks Whether to allow inline line breaks in log entries
-     * @param bool $ignoreEmptyContextAndExtra
+     * @param string $format                     The format of the message
+     * @param string $dateFormat                 The format of the timestamp: one supported by DateTime::format
+     * @param bool   $allowInlineLineBreaks      Whether to allow inline line breaks in log entries
+     * @param bool   $ignoreEmptyContextAndExtra
      */
     public function __construct($colorScheme = null, $format = null, $dateFormat = null, $allowInlineLineBreaks = false, $ignoreEmptyContextAndExtra = false)
     {

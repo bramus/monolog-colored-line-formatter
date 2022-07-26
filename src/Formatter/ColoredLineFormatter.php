@@ -16,10 +16,10 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     private $colorScheme = null;
 
     /**
-     * @param string $format                     The format of the message
-     * @param string $dateFormat                 The format of the timestamp: one supported by DateTime::format
-     * @param bool   $allowInlineLineBreaks      Whether to allow inline line breaks in log entries
-     * @param bool   $ignoreEmptyContextAndExtra
+     * @param string $format The format of the message
+     * @param string $dateFormat The format of the timestamp: one supported by DateTime::format
+     * @param bool $allowInlineLineBreaks Whether to allow inline line breaks in log entries
+     * @param bool $ignoreEmptyContextAndExtra
      */
     public function __construct($colorScheme = null, $format = null, $dateFormat = null, $allowInlineLineBreaks = false, $ignoreEmptyContextAndExtra = false)
     {
@@ -55,12 +55,15 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(array $record) : string
+    public function format($record): string
     {
         // Get the Color Scheme
         $colorScheme = $this->getColorScheme();
 
-        // Let the parent class to the formatting, yet wrap it in the color linked to the level
-        return $colorScheme->getColorizeString($record['level']).trim(parent::format($record)).$colorScheme->getResetString()."\n";
+        if ($record instanceof \Monolog\LogRecord) {
+            return $colorScheme->getColorizeString($record->level) . trim(parent::format($record->toArray())) . $colorScheme->getResetString() . "\n";
+        }
+
+        return $colorScheme->getColorizeString($record['level']) . trim(parent::format($record)) . $colorScheme->getResetString() . "\n";
     }
 }

@@ -1,42 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bramus\Monolog\Formatter;
 
 use Bramus\Monolog\Formatter\ColorSchemes\ColorSchemeInterface;
+use Monolog\Formatter\LineFormatter;
+use Monolog\LogRecord;
+
+use function trim;
 
 /**
- * A Colored Line Formatter for Monolog
+ * A Colored Line Formatter for Monolog.
  */
-class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
+class ColoredLineFormatter extends LineFormatter
 {
     /**
-     * The Color Scheme to use
-     * @var ColorSchemeInterface
+     * The Color Scheme to use.
      */
-    private $colorScheme = null;
+    private ColorSchemeInterface|null $colorScheme = null;
 
     /**
-     * @param string $format                     The format of the message
-     * @param string $dateFormat                 The format of the timestamp: one supported by DateTime::format
-     * @param bool   $allowInlineLineBreaks      Whether to allow inline line breaks in log entries
-     * @param bool   $ignoreEmptyContextAndExtra
+     * @param null $colorScheme
+     * @param null $format The format of the message
+     * @param null $dateFormat The format of the timestamp: one supported by DateTime::format
+     * @param bool $allowInlineLineBreaks Whether to allow inline line breaks in log entries
      */
-    public function __construct($colorScheme = null, $format = null, $dateFormat = null, $allowInlineLineBreaks = false, $ignoreEmptyContextAndExtra = false)
-    {
+    public function __construct(
+        $colorScheme = null,
+        $format = null,
+        $dateFormat = null,
+        bool $allowInlineLineBreaks = false,
+        bool $ignoreEmptyContextAndExtra = false
+    ) {
         // Store the Color Scheme
-        if ($colorScheme instanceof ColorSchemeInterface) $this->setColorScheme($colorScheme);
+        if ($colorScheme instanceof ColorSchemeInterface) {
+            $this->setColorScheme($colorScheme);
+        }
 
         // Call Parent Constructor
         parent::__construct($format, $dateFormat, $allowInlineLineBreaks, $ignoreEmptyContextAndExtra);
     }
 
     /**
-     * Gets The Color Scheme
-     * @return ColorSchemeInterface
+     * Gets The Color Scheme.
      */
-    public function getColorScheme()
+    public function getColorScheme(): ColorSchemeInterface
     {
-        if (!$this->colorScheme) {
+        if (! $this->colorScheme) {
             $this->colorScheme = new ColorSchemes\DefaultScheme();
         }
 
@@ -44,10 +55,9 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     }
 
     /**
-     * Sets The Color Scheme
-     * @param array
+     * Sets The Color Scheme.
      */
-    public function setColorScheme(ColorSchemeInterface $colorScheme)
+    public function setColorScheme(ColorSchemeInterface $colorScheme): void
     {
         $this->colorScheme = $colorScheme;
     }
@@ -55,12 +65,14 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(array $record) : string
+    public function format(LogRecord $record): string
     {
         // Get the Color Scheme
         $colorScheme = $this->getColorScheme();
 
         // Let the parent class to the formatting, yet wrap it in the color linked to the level
-        return $colorScheme->getColorizeString($record['level']).trim(parent::format($record)).$colorScheme->getResetString()."\n";
+        return $colorScheme->getColorizeString($record['level']) . trim(
+            parent::format($record)
+        ) . $colorScheme->getResetString() . "\n";
     }
 }

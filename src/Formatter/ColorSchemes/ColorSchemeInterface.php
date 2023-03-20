@@ -1,31 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bramus\Monolog\Formatter\ColorSchemes;
 
 interface ColorSchemeInterface
 {
     /**
-     * Set the Color Scheme
+     * Set the Color Scheme.
      * @param array $colorScheme The Color Scheme
      */
     public function setColorizeArray(array $colorScheme);
 
     /**
-     * Get the Color Scheme
+     * Get the Color Scheme.
      * @return array Color Scheme
      */
-    public function getColorizeArray();
+    public function getColorizeArray(): array;
 
     /**
-     * Get the Color Scheme String for the given Level
-     * @param  int    $level The Logger Level
+     * Get the Color Scheme String for the given Level.
+     * @param int $level The Logger Level
      * @return string The Color Scheme String
      */
-    public function getColorizeString($level);
+    public function getColorizeString(int $level): string;
 
     /**
-     * Get the string identifier that closes/finishes the styling
+     * Get the string identifier that closes/finishes the styling.
      * @return string The reset code
      */
-    public function getResetString();
+    public function getResetString(): string;
 }

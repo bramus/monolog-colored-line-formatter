@@ -1,23 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bramus\Monolog\Formatter\ColorSchemes;
 
 use Bramus\Ansi\Ansi;
 use Bramus\Ansi\Writers\BufferWriter;
+use Exception;
+use Monolog\Level;
+
+use function array_intersect_key;
 
 trait ColorSchemeTrait
 {
     /**
-     * ANSI Wrapper which provides colors
-     * @var \Bramus\Ansi\Ansi
+     * ANSI Wrapper which provides colors.
      */
-    protected $ansi = null;
+    protected Ansi|null $ansi = null;
 
     /**
-     * The Color Scheme Array
-     * @var array
+     * The Color Scheme Array.
      */
-    protected $colorScheme = array();
+    protected array $colorScheme = [];
 
     /*
      * Constructor
@@ -29,43 +33,43 @@ trait ColorSchemeTrait
     }
 
     /**
-     * Set the Color Scheme Array
+     * Set the Color Scheme Array.
      * @param array $colorScheme The Color Scheme Array
      */
-    public function setColorizeArray(array $colorScheme)
+    public function setColorizeArray(array $colorScheme): void
     {
         // Only store entries that exist as Monolog\Logger levels
-        $allowedLogLevels = array_values(\Monolog\Logger::getLevels());
-        $colorScheme = array_intersect_key($colorScheme, array_flip($allowedLogLevels));
+        $colorScheme = array_intersect_key($colorScheme, array_fill_keys(Level::VALUES, null));
 
         // Store the filtered colorScheme
         $this->colorScheme = $colorScheme;
     }
 
     /**
-     * Get the Color Scheme Array
+     * Get the Color Scheme Array.
      * @return array The Color Scheme Array
      */
-    public function getColorizeArray()
+    public function getColorizeArray(): array
     {
         return $this->colorScheme;
     }
 
     /**
-     * Get the Color Scheme String for the given Level
-     * @param  int    $level The Logger Level
+     * Get the Color Scheme String for the given Level.
+     * @param int $level The Logger Level
      * @return string The Color Scheme String
      */
-    public function getColorizeString($level)
+    public function getColorizeString(int $level): string
     {
-        return isset($this->colorScheme[$level]) ? $this->colorScheme[$level] : '';
+        return $this->colorScheme[$level] ?? '';
     }
 
     /**
-     * Get the string identifier that closes/finishes the styling
+     * Get the string identifier that closes/finishes the styling.
      * @return string The reset string
+     * @throws Exception
      */
-    public function getResetString()
+    public function getResetString(): string
     {
         return $this->ansi->reset()->get();
     }

@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bramus\Monolog\Formatter\ColorSchemes;
 
-use Monolog\Logger;
-use Bramus\Ansi\Ansi;
 use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
+use Exception;
+use Monolog\Level;
 
 class TrafficLight implements ColorSchemeInterface
 {
     /**
-     * Use the ColorScheme and alias its constructor
+     * Use the ColorScheme and alias its constructor.
      */
     use ColorSchemeTrait {
         ColorSchemeTrait::__construct as private __constructTrait;
     }
 
     /**
-     * [__construct description]
+     * [__construct description].
+     * @throws Exception
      */
     public function __construct()
     {
@@ -24,15 +27,17 @@ class TrafficLight implements ColorSchemeInterface
         $this->__constructTrait();
 
         // Our Color Scheme
-        $this->setColorizeArray(array(
-            Logger::DEBUG => $this->ansi->sgr(array(SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_FAINT))->get(),
-            Logger::INFO => $this->ansi->sgr(array(SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_NORMAL))->get(),
-            Logger::NOTICE => $this->ansi->sgr(array(SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_BRIGHT))->get(),
-            Logger::WARNING => $this->ansi->sgr(array(SGR::COLOR_FG_YELLOW, SGR::STYLE_INTENSITY_FAINT))->get(),
-            Logger::ERROR => $this->ansi->sgr(array(SGR::COLOR_FG_YELLOW, SGR::STYLE_INTENSITY_NORMAL))->get(),
-            Logger::CRITICAL => $this->ansi->sgr(array(SGR::COLOR_FG_RED, SGR::STYLE_INTENSITY_NORMAL))->get(),
-            Logger::ALERT => $this->ansi->sgr(array(SGR::COLOR_FG_RED_BRIGHT, SGR::STYLE_INTENSITY_BRIGHT))->get(),
-            Logger::EMERGENCY => $this->ansi->sgr(array(SGR::COLOR_FG_RED_BRIGHT, SGR::STYLE_INTENSITY_BRIGHT, SGR::STYLE_BLINK))->get(),
-        ));
+        $this->setColorizeArray([
+            Level::Debug->value => $this->ansi->sgr([SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_FAINT])->get(),
+            Level::Info->value => $this->ansi->sgr([SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_NORMAL])->get(),
+            Level::Notice->value => $this->ansi->sgr([SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_BRIGHT])->get(),
+            Level::Warning->value => $this->ansi->sgr([SGR::COLOR_FG_YELLOW, SGR::STYLE_INTENSITY_FAINT])->get(),
+            Level::Error->value => $this->ansi->sgr([SGR::COLOR_FG_YELLOW, SGR::STYLE_INTENSITY_NORMAL])->get(),
+            Level::Critical->value => $this->ansi->sgr([SGR::COLOR_FG_RED, SGR::STYLE_INTENSITY_NORMAL])->get(),
+            Level::Alert->value => $this->ansi->sgr([SGR::COLOR_FG_RED_BRIGHT, SGR::STYLE_INTENSITY_BRIGHT])->get(),
+            Level::Emergency->value => $this->ansi->sgr(
+                [SGR::COLOR_FG_RED_BRIGHT, SGR::STYLE_INTENSITY_BRIGHT, SGR::STYLE_BLINK]
+            )->get(),
+        ]);
     }
 }

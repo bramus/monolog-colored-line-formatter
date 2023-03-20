@@ -1,13 +1,26 @@
 <?php
 
-use \Monolog\Logger;
-use \Bramus\Monolog\Formatter\ColoredLineFormatter;
-use Bramus\Ansi\Ansi;
-use Bramus\Ansi\Writers\BufferWriter;
-use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
+declare(strict_types=1);
 
-class ColoredLineFormatterTest extends \PHPUnit\Framework\TestCase
+use Bramus\Ansi\Ansi;
+use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
+use Bramus\Ansi\Writers\BufferWriter;
+use Bramus\Monolog\Formatter\ColoredLineFormatter;
+use Bramus\Monolog\Formatter\ColorSchemes\DefaultScheme;
+use Bramus\Monolog\Formatter\ColorSchemes\TrafficLight;
+use Monolog\Level;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @internal
+ * @coversNothing
+ */
+final class ColoredLineFormatterTest extends TestCase
 {
+    protected Ansi $ansi;
+
+    protected ColoredLineFormatter $clf;
+
     protected function setUp(): void
     {
         $this->ansi = new Ansi(new BufferWriter());
@@ -19,76 +32,78 @@ class ColoredLineFormatterTest extends \PHPUnit\Framework\TestCase
         // ...
     }
 
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
-        $this->assertInstanceOf('\Bramus\Monolog\Formatter\ColoredLineFormatter', $this->clf);
+        static::assertInstanceOf('\Bramus\Monolog\Formatter\ColoredLineFormatter', $this->clf);
     }
 
-    public function testReset()
+    public function testReset(): void
     {
-        $this->assertEquals($this->clf->getColorScheme()->getResetString(), "\033[0m");
+        static::assertEquals($this->clf->getColorScheme()->getResetString(), "\033[0m");
     }
 
-    public function testDefaultColorScheme()
+    public function testDefaultColorScheme(): void
     {
-        $defaultScheme = new \Bramus\Monolog\Formatter\ColorSchemes\DefaultScheme();
+        $defaultScheme = new DefaultScheme();
 
-        $this->assertEquals(
+        static::assertEquals(
             $this->clf->getColorScheme()->getColorizeArray(),
             $defaultScheme->getColorizeArray()
         );
     }
 
-    public function testSetColorSchemeViaConstructor()
+    public function testSetColorSchemeViaConstructor(): void
     {
-        $newScheme = new \Bramus\Monolog\Formatter\ColorSchemes\TrafficLight();
+        $newScheme = new TrafficLight();
         $this->clf = new ColoredLineFormatter($newScheme);
 
-        $this->assertEquals(
+        static::assertEquals(
             $this->clf->getColorScheme()->getColorizeArray(),
             $newScheme->getColorizeArray()
         );
     }
 
-    public function testSetColorSchemeViaSetColorScheme()
+    public function testSetColorSchemeViaSetColorScheme(): void
     {
-        $newScheme = new \Bramus\Monolog\Formatter\ColorSchemes\TrafficLight();
+        $newScheme = new TrafficLight();
         $this->clf->setColorScheme($newScheme);
 
-        $this->assertEquals(
+        static::assertEquals(
             $this->clf->getColorScheme()->getColorizeArray(),
             $newScheme->getColorizeArray()
         );
     }
 
-    public function testSetColorSchemeFilter()
+    /**
+     * @throws Exception
+     */
+    public function testSetColorSchemeFilter(): void
     {
-
-        $dummyArray = array(
-            Logger::DEBUG => $this->ansi->sgr(array(SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_FAINT))->get(),
+        $dummyArray = [
+            Level::Debug->value => $this->ansi->sgr([SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_FAINT])->get(),
             '123' => 'foo',
             9000 => 'bar',
-            Logger::INFO => $this->ansi->sgr(array(SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_NORMAL))->get(),
-            Logger::NOTICE => $this->ansi->sgr(array(SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_BRIGHT))->get(),
+            Level::Info->value => $this->ansi->sgr([SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_NORMAL])->get(),
+            Level::Notice->value => $this->ansi->sgr([SGR::COLOR_FG_GREEN, SGR::STYLE_INTENSITY_BRIGHT])->get(),
             'foo' => 200,
-            Logger::WARNING => $this->ansi->sgr(array(SGR::COLOR_FG_YELLOW, SGR::STYLE_INTENSITY_FAINT))->get(),
-            Logger::ERROR => $this->ansi->sgr(array(SGR::COLOR_FG_YELLOW, SGR::STYLE_INTENSITY_NORMAL))->get(),
-            Logger::CRITICAL => $this->ansi->sgr(array(SGR::COLOR_FG_RED, SGR::STYLE_INTENSITY_NORMAL))->get(),
-            Logger::ALERT => $this->ansi->sgr(array(SGR::COLOR_FG_RED_BRIGHT, SGR::STYLE_INTENSITY_BRIGHT))->get(),
-            Logger::EMERGENCY => $this->ansi->sgr(array(SGR::COLOR_FG_RED_BRIGHT, SGR::STYLE_INTENSITY_BRIGHT, SGR::STYLE_BLINK))->get(),
-        );
+            Level::Warning->value => $this->ansi->sgr([SGR::COLOR_FG_YELLOW, SGR::STYLE_INTENSITY_FAINT])->get(),
+            Level::Error->value => $this->ansi->sgr([SGR::COLOR_FG_YELLOW, SGR::STYLE_INTENSITY_NORMAL])->get(),
+            Level::Critical->value => $this->ansi->sgr([SGR::COLOR_FG_RED, SGR::STYLE_INTENSITY_NORMAL])->get(),
+            Level::Alert->value => $this->ansi->sgr([SGR::COLOR_FG_RED_BRIGHT, SGR::STYLE_INTENSITY_BRIGHT])->get(),
+            Level::Emergency->value => $this->ansi->sgr(
+                [SGR::COLOR_FG_RED_BRIGHT, SGR::STYLE_INTENSITY_BRIGHT, SGR::STYLE_BLINK]
+            )->get(),
+        ];
 
         $this->clf->getColorScheme()->setColorizeArray($dummyArray);
 
-        foreach(Logger::getLevels() as $level)
-        {
-            $this->assertArrayHasKey($level, $this->clf->getColorScheme()->getColorizeArray());
+        foreach (Level::VALUES as $level) {
+            static::assertArrayHasKey($level, $this->clf->getColorScheme()->getColorizeArray());
         }
 
-        $this->assertArrayNotHasKey('123', $this->clf->getColorScheme()->getColorizeArray());
-        $this->assertArrayNotHasKey('foo', $this->clf->getColorScheme()->getColorizeArray());
-        $this->assertArrayNotHasKey(9000, $this->clf->getColorScheme()->getColorizeArray());
-
+        static::assertArrayNotHasKey('123', $this->clf->getColorScheme()->getColorizeArray());
+        static::assertArrayNotHasKey('foo', $this->clf->getColorScheme()->getColorizeArray());
+        static::assertArrayNotHasKey(9000, $this->clf->getColorScheme()->getColorizeArray());
     }
 
     // public function testDemo()

@@ -18,8 +18,6 @@ jobs:
       - uses: shivammathur/setup-php@2.9.0
         with:
           php-version: ${{ matrix.php }}
-      - name: Remove Composer lockfile
-        run: rm composer.lock
       - name: Install dependencies
         run: composer update --no-interaction --prefer-dist ${{ matrix.dependencies }}
       - name: Configure PHPUnit problem matchers

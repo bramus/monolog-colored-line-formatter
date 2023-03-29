@@ -1,14 +1,17 @@
 <?php
 
-use Monolog\Logger;
 use Monolog\Level;
 use Bramus\Monolog\Formatter\ColoredLineFormatter;
 use Bramus\Ansi\Ansi;
 use Bramus\Ansi\Writers\BufferWriter;
 use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
+use PHPUnit\Framework\TestCase;
 
-class ColoredLineFormatterTest extends \PHPUnit\Framework\TestCase
+class ColoredLineFormatterTest extends TestCase
 {
+    protected Ansi $ansi;
+    protected ColoredLineFormatter $clf;
+
     protected function setUp(): void
     {
         $this->ansi = new Ansi(new BufferWriter());

@@ -13,19 +13,27 @@ Built by Bramus! - [https://www.bram.us/](https://www.bram.us/)
 
 ## Prerequisites/Requirements
 
-- PHP 7.2 or greater
-- Monolog 2.0 or greater
+- PHP 8.1 or greater
+- Monolog 3.0 or greater
 
 _Looking for a version compatible with Monolog 1.x? Check out the `monolog-1.x` branch then. The version of `monolog-colored-line-formatter` that is compatible with Monolog 1.x, is `monolog-colored-line-formatter` version `~2.0`_
+
+_Looking for a version compatible with Monolog 2.x? Check out the `monolog-2.x` branch then. The version of `monolog-colored-line-formatter` that is compatible with Monolog 1.x, is `monolog-colored-line-formatter` version `~3.0.0`_
 
 ## Installation
 
 Installation is possible using Composer.
 
+Install `monolog-colored-line-formatter`, compatible with Monolog 3.x:
+
+```bash
+composer require bramus/monolog-colored-line-formatter ~3.1
+```
+
 Install `monolog-colored-line-formatter`, compatible with Monolog 2.x:
 
 ```bash
-composer require bramus/monolog-colored-line-formatter ~3.0
+composer require bramus/monolog-colored-line-formatter ~3.0.0
 ```
 
 Install `monolog-colored-line-formatter`, compatible with Monolog 1.x:
@@ -91,6 +99,7 @@ To define your own color scheme make a class that implements the `\Bramus\Monolo
 namespace Bramus\Monolog\Formatter\ColorSchemes;
 
 use Monolog\Logger;
+use Monolog\Level;
 use Bramus\Ansi\Ansi;
 use Bramus\Ansi\ControlSequences\EscapeSequences\Enums\SGR;
 
@@ -113,14 +122,14 @@ class TrafficLight implements ColorSchemeInterface
 
         // Our Color Scheme
         $this->setColorizeArray(array(
-            Logger::DEBUG => $this->ansi->color(SGR::COLOR_FG_WHITE)->get(),
-            Logger::INFO => $this->ansi->color(SGR::COLOR_FG_GREEN)->get(),
-            Logger::NOTICE => $this->ansi->color(SGR::COLOR_FG_CYAN)->get(),
-            Logger::WARNING => $this->ansi->color(SGR::COLOR_FG_YELLOW)->get(),
-            Logger::ERROR => $this->ansi->color(SGR::COLOR_FG_RED)->get(),
-            Logger::CRITICAL => $this->ansi->color(SGR::COLOR_FG_RED)->underline()->get(),
-            Logger::ALERT => $this->ansi->color(array(SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT))->get(),
-            Logger::EMERGENCY => $this->ansi->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
+            Level::Debug => $this->ansi->color(SGR::COLOR_FG_WHITE)->get(),
+            Level::Info => $this->ansi->color(SGR::COLOR_FG_GREEN)->get(),
+            Level::Notice => $this->ansi->color(SGR::COLOR_FG_CYAN)->get(),
+            Level::Warning => $this->ansi->color(SGR::COLOR_FG_YELLOW)->get(),
+            Level::Error => $this->ansi->color(SGR::COLOR_FG_RED)->get(),
+            Level::Critical => $this->ansi->color(SGR::COLOR_FG_RED)->underline()->get(),
+            Level::Alert => $this->ansi->color([SGR::COLOR_FG_WHITE, SGR::COLOR_BG_RED_BRIGHT])->get(),
+            Level::Emergency => $this->ansi->color(SGR::COLOR_BG_RED_BRIGHT)->blink()->color(SGR::COLOR_FG_WHITE)->get(),
         ));
     }
 }

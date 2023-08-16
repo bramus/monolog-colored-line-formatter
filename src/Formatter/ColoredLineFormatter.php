@@ -23,8 +23,9 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
      * @param string|null $dateFormat The format of the timestamp: one supported by DateTime::format
      * @param bool $allowInlineLineBreaks Whether to allow inline line breaks in log entries
      * @param bool $ignoreEmptyContextAndExtra
+     * @param bool $includeStacktraces
      */
-    public function __construct(?ColorSchemeInterface $colorScheme = null, $format = null, $dateFormat = null, bool $allowInlineLineBreaks = false, bool $ignoreEmptyContextAndExtra = false)
+    public function __construct(?ColorSchemeInterface $colorScheme = null, $format = null, $dateFormat = null, bool $allowInlineLineBreaks = false, bool $ignoreEmptyContextAndExtra = false, bool $includeStacktraces = false)
     {
         // Store the Color Scheme
         if (! $colorScheme) {
@@ -34,7 +35,7 @@ class ColoredLineFormatter extends \Monolog\Formatter\LineFormatter
         }
 
         // Call Parent Constructor
-        parent::__construct($format, $dateFormat, $allowInlineLineBreaks, $ignoreEmptyContextAndExtra);
+        parent::__construct($format, $dateFormat, $allowInlineLineBreaks, $ignoreEmptyContextAndExtra, $includeStacktraces);
     }
 
     /**

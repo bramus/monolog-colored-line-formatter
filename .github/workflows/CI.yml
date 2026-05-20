@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.4
-      - uses: shivammathur/setup-php@2.9.0
+      - uses: shivammathur/setup-php@2.37.1
         with:
           php-version: ${{ matrix.php }}
       - name: Install dependencies
